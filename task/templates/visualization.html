@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Habitat on Web</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:center;padding-bottom: 10px; padding-top: 10px;">
+            <input type="button" id="previous" onclick="previousPage()" value="previous" />
+            <input type="button" id="next" onclick="nextPage()" value="next" />
+        </div>
+
+        <div style="text-align:center;padding-bottom: 10px; padding-top: 10px;">
+            <select name="scenes" id="sceneList" onChange="getHits()">
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="padding: 10px">
+                <label id="totalSubmittedHits1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="totalApprovedHits1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="messageAllHits1" class="label-style" style="font-weight: 300;"></label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approveAll1" value="next" class="btn btn-primary" onClick="approveAllHits(true);">
+                            Approve all <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" id="hit_stats">
+                <label id="sceneId" style="font-weight: 300;"></label>
+                <br/>
+                <label id="totalHits" style="font-weight: 300;"></label>
+                <br/>
+                <label id="sceneAssignments" style="font-weight: 300;"></label>
+                <br/>
+                <label id="sceneApprovedAssignments" style="font-weight: 300;"></label>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve1" value="next" class="btn btn-primary" onClick="approveHit(0, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve2" value="next" class="btn btn-primary" onClick="approveHit(1, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text3"class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve3" value="next" class="btn btn-primary" onClick="approveHit(2, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+           </div>
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text4"class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve4" value="next" class="btn btn-primary" onClick="approveHit(3, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback5" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve5" value="next" class="btn btn-primary" onClick="approveHit(4, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback6" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve6" value="next" class="btn btn-primary" onClick="approveHit(5, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback7" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve7" value="next" class="btn btn-primary" onClick="approveHit(6, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+            <div class="col-md-6" style="padding: 10px">
+                <label id="hitid8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="text8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="episode8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="scene8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="instruction8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="approved8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="submitted8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="total8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="message8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback8" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve8" value="next" class="btn btn-primary" onClick="approveHit(7, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/pagination.js"></script>
+</body>
+</html>

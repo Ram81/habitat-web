@@ -1,0 +1,65 @@
+<div id="container-exp">
+  <div id="trial">
+    <div class="hidden" id="warning"></div>
+    <div id="task-title">
+      <h1>Habitat on Web</h1>
+    </div>
+    <div id="controls">
+      <center>CONTROLS:</center>
+      <div class="row">
+        <div class="col-sm-4">
+          <ul  class="controls-ul">
+            <li>W: Move forward</li>
+            <!-- <li>S: Move backward</li>
+            <li>Spacebar: Pick/Place object</li> -->
+          </ul>
+        </div>
+        <div class="col-sm-4">
+          <ul class="controls-ul">
+            <li>Left arrow/A: Turn left</li>
+            <li>Right arrow/D: Turn right</li>
+          </ul>
+        </div>
+        <div class="col-sm-4">
+          <ul class="controls-ul">
+            <li>Up arrow: Look up</li>
+            <li>Down arrow: Look down</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="task-instruction"></div>
+    <div id="status">Initialization...</div>
+    <div id="status-description"></div>
+    <div id="instructions">
+    </div>
+    <div id="text-assistance-1"></div>
+
+    <div id="container">
+      <div id="sizer">
+        <div id="expander">
+          <div id="listener">
+            <canvas id="canvas" width="640" height="480"></canvas>
+            <div class="inventory-center">
+              <canvas id="inventory" width="80" height="80"></canvas>
+            </div>
+            <canvas id="topdown" width="640" height="480" style="visibility:collapse;height:1px;min-height:1px;"></canvas>
+            <canvas id="semantic" width="640" height="480" style="transform: scaleY(-1);visibility:collapse;height:1px;min-height:1px"></canvas>
+            <canvas id="radar"></canvas>
+            <pre id="log" style="visibility: collapse; height:1px;min-height:1px;"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="actions-nav">
+    </div>
+    <div id="actions-nav-instructions">
+    </div>
+
+    <script src="WindowlessEmscriptenApplication.js"></script>
+    <script async src="hsim_bindings.js"></script>
+    <!--<script type="text/javascript" src="defaults.js"></script>-->
+    <script type="text/javascript" src="bundle.js"></script>
+  </div>
+</div>

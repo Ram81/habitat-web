@@ -1,0 +1,7 @@
+# Data assets
+task/data/
+task/*.db
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]

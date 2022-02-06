@@ -1,0 +1,178 @@
+
+body {
+    padding:0px;
+    margin: 0px;
+    background-color: white;
+    color: black;
+    font-weight: 300; 
+    font-size: 13pt;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+#container {
+  width:100%;
+  position:relative;
+}
+
+#controls {
+  color: white;
+  margin-bottom:1em;
+  text-align:center;
+  height: 60px;
+}
+
+.controls-ul {
+  display: inline-block;
+  text-align: left;
+}
+
+.inventory-center {
+  margin-top: 1.5em;
+  text-align: center;
+}
+
+/* task instructions */
+
+#task-instruction {
+  color: white;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  padding: 15px;
+}
+
+#task-instruction-nav {
+  padding: 20px 15px;
+}
+
+/* text styling */
+strong {
+  font-weight: 600;         
+}
+
+.warm {
+  color: steelblue;
+  text-align: justify;
+}
+
+.cool {
+  color: #ccccff;
+}
+
+h1 {
+  margin-top: 0px;
+}
+
+
+/* these are all the same for now, but easy to modify individually */
+#container-not-an-ad, #container-error, #container-consent {
+    background: white;
+    margin: 30px;
+}
+
+#container-exp, #container-questionnaire, #container-instructions {
+  background: #2f363f;
+  color: white;
+  padding: 30px;
+  font-size: 15px;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.instructions {
+  text-align: justify;
+  color:#444444;
+}
+
+.viewer-nav {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* ad.html  - the ad that people view first */
+#adlogo {
+    width: 140px;
+    padding: 2px;
+    border: 1px solid #ccc;
+    margin-right: 1em;
+}
+
+/* consent.html - the consent form */
+#consent {
+  margin: 0 auto;
+  margin-top: 0;
+  width: 800px;
+  font-size: 100%;
+}
+
+.legal {
+  text-align: justify;
+  font-size: 11pt;
+  line-height: 1.1em;
+}
+
+#trial {
+  margin: 0 auto;
+  width: 800px;
+  height: 900px;
+  text-align: center;
+}
+
+#query {
+  color: darkgray;
+}
+
+.question {
+  margin-bottom: 30px;
+}
+
+/* errors */
+#error img {
+  padding-right: 10px;
+  padding-top: 15px;
+}
+
+/* text assistance */
+#text-assistance-1 {
+  display: inline-block;
+  position: absolute;
+  top: 21em;
+  width:calc(45% - 320px);
+  text-align: center;
+  left: 0;
+  margin-left: 1em;
+}
+
+#text-assistance-1 img {
+  height: 4em;
+}
+
+#text-assistance-1 s {
+  opacity: 50%;
+}
+
+.img-caption {
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+.object-type {
+  padding-bottom: 10px;
+  font-size: 1.05em;
+  font-weight: 500;
+}
+
+#feedback {
+  width: 80%;
+}
+
+/* actions nav */
+#actions-nav {
+  position: absolute;
+  top: 20em;
+  width:calc(45% - 320px);
+  text-align: center;
+  right: 0;
+  margin-left: 1em;
+}

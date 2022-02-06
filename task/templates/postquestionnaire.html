@@ -1,0 +1,49 @@
+<div id="container-questionnaire">
+    <h1>Please hit “Continue” to complete the task otherwise your work will not be submitted</h1>
+
+    <hr />
+
+    <div class="instructions well">
+
+        <form id="postquiz" action="debrief" method="post">
+
+
+            <!-- beginning of a question -->
+            <div class="row question">
+                <div class="col-md-4">
+                    Did you have any feedback for the task?
+                </div>
+                <div class="col-md-8">
+                    <textarea id="feedback" value=""></textarea>
+                </div>
+            </div>
+            <!-- end of a question -->
+        </form>
+    </div>
+
+    <hr />
+
+    <div class="instructionsnav">
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-7">
+            </div>
+            <div class="col-xs-3">
+                <button type="button" id="next" value="next" class="btn btn-primary btn-lg continue">
+                    Continue to submit the HIT <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-6">
+            </div>
+            <div class="col-xs-4" id="submitting-info">
+            </div>
+        </div>
+    </div>
+
+
+</div>

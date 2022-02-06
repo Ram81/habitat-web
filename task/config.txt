@@ -1,0 +1,45 @@
+[HIT Configuration]
+title = Simple tasks in a 3D simulated environment
+description = You will be placed in a simulated house. You will be asked to find a particular object, pick it up, find a particular receptacle, and place the object in/on the receptacle.
+amt_keywords = Perception, Psychology
+lifetime = 168
+us_only = true
+approve_requirement = 95
+number_hits_approved = 5000
+require_master_workers = false
+contact_email_on_error = NoahTurkProject.1013@gmail.com
+ad_group = Default psiTurk
+psiturk_keywords = Psychology
+organization_name = Anonymous
+browser_exclude_rule = MSIE, mobile, tablet
+allow_repeats = true
+
+[Database Parameters]
+database_url = mysql://psiturk:password@127.0.0.1:3306/participants
+table_name = turkdemo
+
+[Server Parameters]
+host = localhost
+port = 8080
+cutoff_time = 30
+logfile = server.log
+loglevel = 2
+debug = true
+threads = auto
+server_timeout = 30
+
+
+# SET THESE BEFORE LAUNCHING PSITURK
+
+[Task Parameters]
+experiment_code_version = 2.0
+num_conds = 1
+num_counters = 1
+
+[Shell Parameters]
+launch_in_sandbox_mode = true
+persistent_history_file = .psiturk_history
+#bonus_message = "Thanks for participating!"
+
+use_psiturk_ad_server = false
+ad_location = https://habitatonweb.cloudcv.org:8000/ad

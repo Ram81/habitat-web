@@ -1,0 +1,4 @@
+[submodule "habitat-sim"]
+	path = habitat-sim
+	url = https://github.com/Ram81/habitat-sim
+	branch = habitat-on-web
