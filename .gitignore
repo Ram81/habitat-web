@@ -5,3 +5,7 @@ task/*.db
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# Logs
+task/.psiturk_history
+task/server.log
