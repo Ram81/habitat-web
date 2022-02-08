@@ -10,31 +10,31 @@ import {
   taskConfigs
 } from "./defaults";
 import SimEnv from "./simenv_embind";
-import TopDownMap from "./topdown";
-import NavigateTask from "./navigate";
+import NavigateTask from "./objectnav_task";
 import {
   buildConfigFromURLParameters,
   loadEpisode,
   getObjectIconImgTags
 } from "./utils";
-import TaskValidator from "./TaskValidator";
+import TaskValidator from "./task_validator";
 
 class WebDemo {
   currentResolution = defaultResolution;
+
   constructor(canvasId = "canvas") {
     this.canvasId = canvasId;
   }
+
   initializeModules(
     agentConfig = defaultAgentConfig,
-    episode = defaultEpisode,
-    initializeTopDown = false
+    episode = defaultEpisode
   ) {
     this.config = new Module.SimulatorConfiguration();
     this.config.allowSliding = false;
     if (window.config.dataset != "objectnav") {
       this.config.allowSliding = true;
     }
-    this.config.scene_id = Module.scene.split(".")[0] + ".stage_config.json";
+    this.config.scene_id = Module.scene;
     this.config.enablePhysics = Module.enablePhysics;
     this.config.physicsConfigFile = Module.physicsConfigFile;
 
@@ -46,20 +46,10 @@ class WebDemo {
     this.simenv.addAgent(agentConfig);
     this.simenv.updateCrossHairNode(this.simenv.resolution);
 
-    if (initializeTopDown) {
-      this.topdown = new TopDownMap(
-        this.simenv.getPathFinder(),
-        document.getElementById("topdown")
-      );
-    } else {
-      this.topdown = null;
-    }
-
     this.canvasElement = document.getElementById(this.canvasId);
 
     this.taskValidator = new TaskValidator(episode, this.simenv);
     this.task = new NavigateTask(this.simenv, {
-      topdown: this.topdown,
       canvas: this.canvasElement,
       inventory: document.getElementById("inventory"),
       semantic: document.getElementById("semantic"),

@@ -9,3 +9,9 @@ __pycache__/
 # Logs
 task/.psiturk_history
 task/server.log
+
+# Build directories
+build_js
+build_corrade-rc
+node_modules
+package-lock.json

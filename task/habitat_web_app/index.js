@@ -5,8 +5,8 @@
 /* global FS, Module */
 
 import WebDemo from "./modules/web_demo";
-import VRDemo from "./modules/vr_demo";
-import ViewerDemo from "./modules/viewer_demo";
+//import VRDemo from "./modules/vr_demo";
+//import ViewerDemo from "./modules/viewer_demo";
 import {
   defaultScene,
   dataHome,
@@ -47,7 +47,6 @@ function preload(url) {
 function preloadPhysConfig(url, episodeId, objectsToLoad = null) {
   let emDataHome = "/data";
   FS.mkdir(emDataHome);
-  console.log("From app 1");
 
   let file = url;
   if (url.indexOf("http") === 0) {
@@ -225,18 +224,7 @@ Module.preRun.push(() => {
 Module.onRuntimeInitialized = () => {
   console.log("hsim_bindings initialized");
   let demo;
-  if (window.vrEnabled) {
-    if (navigator && navigator.getVRDisplays) {
-      console.log("Web VR is supported");
-      demo = new VRDemo();
-    }
-  } else if (window.viewerEnabled) {
-    demo = new ViewerDemo();
-  }
-
-  if (!demo) {
-    demo = new WebDemo();
-  }
+  demo = new WebDemo();
 
   if (window.config.taskConfig !== undefined) {
     let episode = loadEpisode(

@@ -9,7 +9,7 @@ import PsiturkEventLogger from "./event_logger";
 import { inventorySlots } from "./defaults";
 import { replaceAll } from "./utils";
 import Inventory from "./inventory";
-import TaskValidator from "./TaskValidator";
+import TaskValidator from "./task_validator";
 
 /**
  * NavigateTask class
@@ -20,13 +20,11 @@ class NavigateTask {
   /**
    * Create navigate task.
    * @param {SimEnv} sim - simulator
-   * @param {TopDownMap} topdown - TopDown Map
    * @param {Object} components - dictionary with status and canvas elements
    */
   constructor(sim, components) {
     this.sim = sim;
     this.components = components;
-    this.topdown = components.topdown;
     this.semanticsEnabled = true;
     this.radarEnabled = false;
     this.keyBindListener = null;
@@ -45,6 +43,7 @@ class NavigateTask {
       this.semanticObservation = new Module.Observation();
       this.semanticScene = this.sim.sim.getSemanticScene();
       this.semanticObjects = this.semanticScene.objects;
+      console.log("ola I am here");
 
       if (window.config.category) {
         const scopeWidth = this.components.scope.offsetWidth;

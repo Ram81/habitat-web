@@ -45,7 +45,8 @@ foreach(resource ${resources})
   )
 endforeach()
 
-set(package_files ${PROJECT_SOURCE_DIR}/../package.json)
+message("ola::: ${PROJECT_SOURCE_DIR}")
+set(package_files ${PROJECT_SOURCE_DIR}/package.json)
 
 add_custom_command(
   OUTPUT empty.stamp
@@ -59,26 +60,21 @@ add_custom_command(
 set(
   bundle_files
   bindings.html
-  webvr.html
-  viewer.html
   bindings.css
-  viewer.css
   webpack.config.js
   index.js
   modules/object_sensor.js
-  modules/navigate.js
+  modules/objectnav_task.js
   modules/simenv_embind.js
-  modules/topdown.js
   modules/web_demo.js
-  modules/viewer_demo.js
   modules/defaults.js
   modules/object_maps.js
-  modules/TaskValidator.js
-  modules/vr_demo.js
+  modules/task_validator.js
   modules/utils.js
 )
 
 add_custom_command(
+  COMMENT "Trying bundlejs build..."
   OUTPUT bundle.js
   COMMAND npm run lint-fix
   COMMAND npm run build -- --build_dir ${CMAKE_CURRENT_BINARY_DIR}

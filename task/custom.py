@@ -36,8 +36,8 @@ custom_code = Blueprint('custom_code', __name__,
 
 utc=pytz.UTC
 
-task_file = open("task_data.json", "r")
-task_data = json.loads(task_file.read())
+#task_file = open("task_data.json", "r")
+# task_data = json.loads(task_file.read())
 
 
 def is_valid_request(request_data):

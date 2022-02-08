@@ -50,16 +50,6 @@ const config = {
       template: path.resolve(__dirname, "bindings.html"),
       filename: path.resolve(buildRootPath, "bindings.html"),
       hash: true
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "webvr.html"),
-      filename: path.resolve(buildRootPath, "webvr.html"),
-      hash: true
-    }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "viewer.html"),
-      filename: path.resolve(buildRootPath, "viewer.html"),
-      hash: true
     })
   ],
   devtool: "source-map"
