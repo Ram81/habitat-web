@@ -239,10 +239,13 @@ export function getObjectIconImgTags(episode) {
   return objectImgTags;
 }
 
+export function getHost() {
+  return window.location.protocol + "//" + window.location.host;
+}
+
 export function getEpisodeMeta(scene_config, episodeId) {
-  //return new Promise((resolve, object) => {
   // read text from URL location
-  let url = "https://habitatonweb.cloudcv.org:8000/data/" + scene_config;
+  let url = getHost() + "/data/" + scene_config;
   var request = new XMLHttpRequest();
   request.open("GET", url, false);
   request.send(null);
@@ -260,7 +263,7 @@ export function getEpisodeMeta(scene_config, episodeId) {
 }
 
 export function getObjects(episode, trainingEpisode, dataset) {
-  let objectHandles = [];
+  let objectConfigs = [];
   if (dataset == "objectnav") {
     let scene_state = episode.scene_state;
     if (scene_state == undefined) {
@@ -272,7 +275,8 @@ export function getObjects(episode, trainingEpisode, dataset) {
       let objectTemplateSplit = objectTemplate.split("/");
       let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
 
-      objectHandles.push(objectName);
+      let objectConfig = getObjectConfig(objectName.split(".")[0], objectName);
+      objectConfigs.push(objectConfig);
     }
     scene_state = trainingEpisode.scene_state;
     for (let idx in scene_state.objects) {
@@ -281,18 +285,28 @@ export function getObjects(episode, trainingEpisode, dataset) {
       let objectTemplateSplit = objectTemplate.split("/");
       let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
 
-      objectHandles.push(objectName);
+      let objectConfig = getObjectConfig(objectName.split(".")[0], objectName);
+      objectConfigs.push(objectConfig);
     }
   } else {
     let objects = episode.objects;
+    let uniqueObjectIds = [];
     for (let idx in objects) {
       let object = objects[idx];
       let objectTemplate = object["objectHandle"];
       let objectTemplateSplit = objectTemplate.split("/");
       let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
 
-      objectHandles.push(objectName);
+      if (!uniqueObjectIds.includes(objectName)) {
+        let objectConfig = getObjectConfig(
+          objectName.split(".")[0],
+          objectName
+        );
+        objectConfigs.push(objectConfig);
+        uniqueObjectIds.push(objectName);
+      }
     }
+
     objects = trainingEpisode.objects;
     for (let idx in objects) {
       let object = objects[idx];
@@ -300,8 +314,26 @@ export function getObjects(episode, trainingEpisode, dataset) {
       let objectTemplateSplit = objectTemplate.split("/");
       let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
 
-      objectHandles.push(objectName);
+      if (!uniqueObjectIds.includes(objectName)) {
+        let objectConfig = getObjectConfig(
+          objectName.split(".")[0],
+          objectName
+        );
+        objectConfigs.push(objectConfig);
+        uniqueObjectIds.push(objectName);
+      }
     }
   }
-  return objectHandles;
+  return objectConfigs;
+}
+
+export function getObjectConfig(objectName, objectHandle) {
+  let objectId = objectHandle.split(".")[0];
+  return {
+    object: objectName,
+    objectIcon: "/data/test_assets/objects/" + objectId + ".png",
+    objectHandle: "/data/objects/" + objectHandle,
+    physicsProperties: "test_assets/objects/" + objectHandle,
+    renderMesh: "test_assets/objects/" + objectId + ".glb"
+  };
 }

@@ -1038,23 +1038,6 @@ class SimEnv {
     this.sim.enableDebugDraw();
   }
 
-  dropObjectFromFloor2() {
-    console.log("dropping object");
-    //this.removeObject(0);
-    // let objectId = this.addObjectByHandle(
-    //   "/data/objects/plate.object_config.json"
-    // );
-    //console.log("oibject: " + objectId);
-    let position = [
-      -4.202342510223389,
-      1.10190188884735107,
-      -7.044765472412109
-    ];
-    position = this.convertVec3fToVector3(position);
-    this.setTranslation(position, 0, 0);
-    this.sim.setActiveState(0, 0);
-  }
-
   /**
    * Get the distance to goal in polar coordinates.
    * @returns {Array} [magnitude, clockwise-angle (in radians)]

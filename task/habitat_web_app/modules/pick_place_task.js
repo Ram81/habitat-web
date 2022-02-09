@@ -183,9 +183,6 @@ class PickPlaceTask {
       if (slot != -1) {
         this.inventory.setSlot(slot, undefined);
       }
-      if (this.lastInteractedObjectId != -1) {
-        let object = this.sim.getObjectFromScene(this.lastInteractedObjectId);
-      }
     } else {
       let emptySlot = this.inventory.getEmptySlot();
       let object = this.sim.getObjectFromScene(objectId);

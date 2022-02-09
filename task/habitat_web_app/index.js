@@ -9,11 +9,8 @@ import {
   defaultScene,
   dataHome,
   sceneHome,
-  fileBasedObjects,
   taskFiles
-  // episodeIdObjectReceptacleMap
 } from "./modules/defaults";
-// import { cleaningTaskEpObjectsMap, thdaObjects } from "./modules/object_maps";
 import "./bindings.css";
 import {
   checkWebAssemblySupport,
@@ -42,7 +39,7 @@ function preload(url) {
   return file;
 }
 
-function preloadPhysConfig(url, episodeId, objectsToLoad = null) {
+function preloadPhysConfig(url, episodeId, objectsToLoadList = null) {
   let emDataHome = "/data";
   FS.mkdir(emDataHome);
 
@@ -58,34 +55,12 @@ function preloadPhysConfig(url, episodeId, objectsToLoad = null) {
 
   // TODO Need to loop through the objects directory on the server (`phys/objects/*`) and put all of the glbs onto the client
   // TODO Fix hacky loading of selected objects for each episode
-  var objects = fileBasedObjects["objects"];
-
-  let objectToLoadList = objectsToLoad;
-  let trainingTaskObjects = ["tomato_soup_can", "plate", "sugar_box"];
-  for (let objectIdx in objects) {
-    let is_present = false;
-    for (let ii in objectToLoadList) {
-      let objectLoadName = objectToLoadList[ii];
-      if (objects[objectIdx]["objectHandle"].includes(objectLoadName)) {
-        is_present = true;
-      }
-    }
-    for (let ii in trainingTaskObjects) {
-      let objectLoadName = trainingTaskObjects[ii];
-      if (objects[objectIdx]["objectHandle"].includes(objectLoadName)) {
-        is_present = true;
-      }
-    }
-    if (is_present == false) {
-      // do nothing, load all objects
-      continue;
-    }
-    console.log(objects[objectIdx]["objectHandle"]);
-    let physicsProperties = objects[objectIdx]["physicsProperties"];
+  for (let objectIdx in objectsToLoadList) {
+    let physicsProperties = objectsToLoadList[objectIdx]["physicsProperties"];
     let physicsPropertyName = physicsProperties.split("/")[
       physicsProperties.split("/").length - 1
     ];
-    let renderMesh = objects[objectIdx]["renderMesh"];
+    let renderMesh = objectsToLoadList[objectIdx]["renderMesh"];
     let renderMeshName = renderMesh.split("/")[
       renderMesh.split("/").length - 1
     ];

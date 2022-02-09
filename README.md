@@ -1,8 +1,13 @@
 # Habitat-Web
 
-This repository is the implmentation of data collection application for project Learning Embodied Visual Exploration from Humans.
 
-Psiturk Habitat Sim is a web-based application to collect human demonstrations for embodied tasks at scale by connecting Habitat simulator to Amazon Mechanical Turk users. [Here's](https://docs.google.com/presentation/d/1Vp1anxvh3PLV_S15eKRoGvaXp1y_XbleUrKh5kXzB0I/edit?usp=sharing) the deck of slides explaining the system design of the application.
+Code for the paper
+
+**[Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale][1]**  
+Ram Ramrakhya, Eric Undersander, Dhruv Batra, Abhishek Das
+
+
+Habitat-Web is a web-based application to collect human demonstrations for embodied tasks at scale by connecting Habitat simulator to Amazon Mechanical Turk users. [Here's](https://docs.google.com/presentation/d/1Vp1anxvh3PLV_S15eKRoGvaXp1y_XbleUrKh5kXzB0I/edit?usp=sharing) the deck of slides explaining the system design of the application.
 
 ## Setup
 
