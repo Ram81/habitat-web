@@ -260,7 +260,7 @@ export function getEpisodeMeta(scene_config, episodeId) {
 }
 
 export function getObjects(episode, trainingEpisode, dataset) {
-  let objects = [];
+  let objectHandles = [];
   if (dataset == "objectnav") {
     let scene_state = episode.scene_state;
     if (scene_state == undefined) {
@@ -272,7 +272,7 @@ export function getObjects(episode, trainingEpisode, dataset) {
       let objectTemplateSplit = objectTemplate.split("/");
       let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
 
-      objects.push(objectName);
+      objectHandles.push(objectName);
     }
     scene_state = trainingEpisode.scene_state;
     for (let idx in scene_state.objects) {
@@ -281,8 +281,27 @@ export function getObjects(episode, trainingEpisode, dataset) {
       let objectTemplateSplit = objectTemplate.split("/");
       let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
 
-      objects.push(objectName);
+      objectHandles.push(objectName);
+    }
+  } else {
+    let objects = episode.objects;
+    for (let idx in objects) {
+      let object = objects[idx];
+      let objectTemplate = object["objectHandle"];
+      let objectTemplateSplit = objectTemplate.split("/");
+      let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
+
+      objectHandles.push(objectName);
+    }
+    objects = trainingEpisode.objects;
+    for (let idx in objects) {
+      let object = objects[idx];
+      let objectTemplate = object["objectHandle"];
+      let objectTemplateSplit = objectTemplate.split("/");
+      let objectName = objectTemplateSplit[objectTemplateSplit.length - 1];
+
+      objectHandles.push(objectName);
     }
   }
-  return objects;
+  return objectHandles;
 }

@@ -10,7 +10,8 @@ import {
   taskConfigs
 } from "./defaults";
 import SimEnv from "./simenv_embind";
-import NavigateTask from "./objectnav_task";
+import ObjectNavTask from "./objectnav_task";
+import PickPlaceTask from "./pick_place_task";
 import {
   buildConfigFromURLParameters,
   loadEpisode,
@@ -49,16 +50,30 @@ class WebDemo {
     this.canvasElement = document.getElementById(this.canvasId);
 
     this.taskValidator = new TaskValidator(episode, this.simenv);
-    this.task = new NavigateTask(this.simenv, {
-      canvas: this.canvasElement,
-      inventory: document.getElementById("inventory"),
-      semantic: document.getElementById("semantic"),
-      radar: document.getElementById("radar"),
-      scope: document.getElementById("scope"),
-      status: document.getElementById("status"),
-      fps: document.getElementById("fps"),
-      taskValidator: this.taskValidator
-    });
+    this.task = this.instantiateTask(window.config.dataset);
+  }
+
+  instantiateTask(dataset) {
+    let task = null;
+    if (dataset == "objectnav") {
+      task = new ObjectNavTask(this.simenv, {
+        canvas: this.canvasElement,
+        fps: document.getElementById("fps"),
+        scope: document.getElementById("scope"),
+        status: document.getElementById("status"),
+        taskValidator: this.taskValidator
+      });
+    } else if (dataset == "pick_and_place") {
+      task = new PickPlaceTask(this.simenv, {
+        canvas: this.canvasElement,
+        fps: document.getElementById("fps"),
+        inventory: document.getElementById("inventory"),
+        scope: document.getElementById("scope"),
+        status: document.getElementById("status"),
+        taskValidator: this.taskValidator
+      });
+    }
+    return task;
   }
 
   setEpisode(episode) {
@@ -104,21 +119,13 @@ class WebDemo {
   runFlythrough() {
     window.config.disableLogging = true;
     window.config.runFlythrough = true;
-    window.config.enableStepPhysics = false;
     window.config.actualTask = false;
-    // let replayEpisode = window.config.taskConfig.flythroughTask.name;
-    // let replayFile = window.config.taskConfig.flythroughReplayFile.name;
-    // let episode = loadEpisode("/data/".concat(replayEpisode));
-    // this.setEpisode(episode);
-    // this.setTaskValidator(episode);
     this.task.reset();
-    // this.task.runFlythrough(replayFile);
   }
 
   runInit() {
     window.config.disableLogging = false;
     window.config.runFlythrough = false;
-    window.config.enableStepPhysics = true;
     window.config.actualTask = true;
     let episodeId = window.config.episodeId;
     let episode = loadEpisode(
@@ -134,7 +141,6 @@ class WebDemo {
   runTrainingTask() {
     window.config.disableLogging = true;
     window.config.runFlythrough = false;
-    window.config.enableStepPhysics = true;
     window.config.actualTask = false;
     let trainingEpisode = window.config.taskConfig.trainingTask.name;
     let episode = loadEpisode(
@@ -159,14 +165,6 @@ class WebDemo {
         position: taskConfig["sensorConfig"]["position"],
         hfov: 79,
         resolution: [480, 640]
-      },
-      {
-        uuid: "semantic",
-        sensorType: Module.SensorType.SEMANTIC,
-        resolution: [480, 640],
-        position: taskConfig["sensorConfig"]["position"],
-        hfov: 79,
-        channels: 1
       }
     ];
     const actionSpace = new Module.ActionSpace();

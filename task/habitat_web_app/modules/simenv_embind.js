@@ -60,18 +60,6 @@ class SimEnv {
       const agent = this.sim.getAgent(this.selectedAgentId);
       agent.setState(this.initialAgentState, true);
     }
-    // if (window.config.actualTask) {
-    //   let locobot_id = this.sim.addLocobot(
-    //     "/data/objects/locobot_merged.object_config.json",
-    //     0,
-    //     0,
-    //     ""
-    //   );
-    //   this.locobot_id = locobot_id;
-    //   console.log("locobot: " + locobot_id);
-    //   this.sim.setObjectMotionType(Module.MotionType.KINEMATIC, locobot_id, 0);
-    // }
-    // this.updateCrossHairNode(this.getCrosshairPosition());
 
     this.grippedObjectId = -1;
     this.nearestObjectId = -1;
@@ -131,7 +119,6 @@ class SimEnv {
           this.addObjectInScene(objectId, objects[index]);
           // adding contact test shape for object
           this.sim.addContactTestObject(objectLibHandle, 0);
-          this.sim.setObjectSemanticId(12445 + objectId, objectId, 0);
           episode.objects[index]["simObjectId"] = objectId;
           episode.objects[index]["prevObjectId"] =
             episode.objects[index]["objectId"];
@@ -173,10 +160,6 @@ class SimEnv {
           rotation,
           Module.MotionType.STATIC
         );
-        // let objectDist = this.geodesicDistance(
-        //   episode.startState.position,
-        //   object["position"]
-        // );
       }
       this.recomputeNavMesh();
     }
@@ -245,11 +228,7 @@ class SimEnv {
    */
   removeAllObjects() {
     let existingObjectIds = this.getExistingObjectIDs();
-    // console.log("Removing: " + existingObjectIds.size());
-    // if (this.locobot_id != -1 && this.locobot_id != undefined) {
-    //   console.log("removing locobot");
-    //   this.sim.removeObject(this.locobot_id, false, true, 0);
-    // }
+
     for (let index = existingObjectIds.size() - 1; index >= 0; index--) {
       let objectId = existingObjectIds.get(index);
       let object = this.getObjectFromScene(objectId);
@@ -266,13 +245,15 @@ class SimEnv {
    * Take one step in the simulation.
    * @param {string} action - action to take
    */
-  step(action) {
+  step(action, checkCollision = false) {
     const agent = this.sim.getAgent(this.selectedAgentId);
-    // let agentTransform = this.getAgentTransformation(this.selectedAgentId);
-    // let data = this.isAgentColliding(action, agentTransform);
-    // if (data["collision"] && window.config.dataset != "objectnav") {
-    //   return true;
-    // }
+    if (checkCollision) {
+      let agentTransform = this.getAgentTransformation(this.selectedAgentId);
+      let data = this.isAgentColliding(action, agentTransform);
+      if (data["collision"]) {
+        return true;
+      }
+    }
     agent.act(action);
     return false;
   }

@@ -25,10 +25,10 @@ if(CCACHE_FOUND)
   set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
 endif()
 
-set(DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../data)
-set(SCENE_DATASETS ${CMAKE_CURRENT_SOURCE_DIR}/../data/scene_datasets)
-set(TEST_ASSETS ${CMAKE_CURRENT_SOURCE_DIR}/../data/test_assets)
-set(DATASETS ${CMAKE_CURRENT_SOURCE_DIR}/../data)
+set(DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/task/data)
+set(SCENE_DATASETS ${CMAKE_CURRENT_SOURCE_DIR}/task/data/scene_datasets)
+set(TEST_ASSETS ${CMAKE_CURRENT_SOURCE_DIR}/task/data/test_assets)
+set(DATASETS ${CMAKE_CURRENT_SOURCE_DIR}/task/data)
 # build options
 option(BUILD_ASSIMP_SUPPORT "Whether to build assimp import library support" ON)
 option(BUILD_PYTHON_BINDINGS "Whether to build python bindings" ON)
@@ -62,7 +62,6 @@ endif()
 # avoid ld visibility warnings, should be done by CMAKE_CXX_VISIBILITY_PRESET
 # but need cmake_policy(SET CMP0063 NEW) also which seems to not work
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
-message("ola: ${PROJECT_SOURCE_DIR}")
 
 # ---[ Dependencies
 include(habitat-sim/src/cmake/dependencies.cmake)

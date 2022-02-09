@@ -12,7 +12,7 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "./src/esp/bindings_js",
+    "rootDir": "./task/habitat_web_app",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,

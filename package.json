@@ -1,7 +1,7 @@
 {
-  "name": "habitat-sim",
+  "name": "habitat-web",
   "version": "0.1.2",
-  "description": "A high performance simulator for training embodied agents",
+  "description": "Habitat-Web: Habitat simulator on web to collect large scale data for embodied tasks",
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@babel/node": "^7.7.7",
@@ -44,7 +44,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ram81/habitat-sim.git"
+    "url": "git+https://github.com/Ram81/habitat-web.git"
   },
   "jest": {
     "collectCoverage": false,
@@ -78,7 +78,7 @@
     "ai",
     "agents"
   ],
-  "author": "FAIR A-STAR",
+  "author": "Ram81",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/facebookresearch/habitat-sim/issues"

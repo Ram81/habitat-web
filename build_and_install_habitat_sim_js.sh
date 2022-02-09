@@ -70,11 +70,7 @@ echo "python2 -m SimpleHTTPServer 8000"
 echo "Or:"
 echo "python3 -m http.server"
 echo "Then open in browser:"
-echo "http://0.0.0.0:8000/build_js/utils/viewer/viewer.html?scene=skokloster-castle.glb"
-echo "Or:"
-echo "http://0.0.0.0:8000/build_js/esp/bindings_js/bindings.html?scene=skokloster-castle.glb"
-echo "Run with physics enabled:"
-echo "http://0.0.0.0:8000/build_js/esp/bindings_js/bindings.html?scene=skokloster-castle.glb&enablePhysics=true&defaultPhysConfig=default.physics_config.json&task=0&enableStepPhysics=true"
+echo "http://0.0.0.0:8001/build_js/task/habitat_web_app/bindings.html?defaultPhysConfig=default.physics_config.json&task=52&episodeId=0&dataset=objectnav"
 
 
 # Sync the latest WebGL build to PsiTurk app

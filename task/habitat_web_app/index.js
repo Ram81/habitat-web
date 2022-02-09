@@ -5,17 +5,15 @@
 /* global FS, Module */
 
 import WebDemo from "./modules/web_demo";
-//import VRDemo from "./modules/vr_demo";
-//import ViewerDemo from "./modules/viewer_demo";
 import {
   defaultScene,
   dataHome,
   sceneHome,
   fileBasedObjects,
-  taskFiles,
-  episodeIdObjectReceptacleMap
+  taskFiles
+  // episodeIdObjectReceptacleMap
 } from "./modules/defaults";
-import { cleaningTaskEpObjectsMap, thdaObjects } from "./modules/object_maps";
+// import { cleaningTaskEpObjectsMap, thdaObjects } from "./modules/object_maps";
 import "./bindings.css";
 import {
   checkWebAssemblySupport,
@@ -61,19 +59,8 @@ function preloadPhysConfig(url, episodeId, objectsToLoad = null) {
   // TODO Need to loop through the objects directory on the server (`phys/objects/*`) and put all of the glbs onto the client
   // TODO Fix hacky loading of selected objects for each episode
   var objects = fileBasedObjects["objects"];
-  let objectList = episodeIdObjectReceptacleMap["object_list"];
-  if (window.config.task == 0 || window.config.task >= 15) {
-    objectList = cleaningTaskEpObjectsMap;
-  }
-  if (
-    window.config.task >= 20 &&
-    window.config.dataset == "objectnav" &&
-    objectsToLoad != null
-  ) {
-    objectList = objectsToLoad;
-    objects = thdaObjects["objects"];
-  }
-  let objectToLoadList = objectList;
+
+  let objectToLoadList = objectsToLoad;
   let trainingTaskObjects = ["tomato_soup_can", "plate", "sugar_box"];
   for (let objectIdx in objects) {
     let is_present = false;
@@ -203,7 +190,6 @@ Module.preRun.push(() => {
 
   Module.enablePhysics = window.config.enablePhysics === "true";
   window.config.runFlythrough = window.config.runFlythrough === "true";
-  window.config.enableStepPhysics = window.config.enableStepPhysics === "true";
 
   preloadTask(taskConfig);
 
