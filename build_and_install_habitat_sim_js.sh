@@ -66,11 +66,15 @@ cd ../
 
 echo "Done building."
 echo "Run:"
-echo "python2 -m SimpleHTTPServer 8000"
+echo "cd build_js/task/habitat_web_app/"
+echo "Run:"
+echo "python2 -m SimpleHTTPServer 8001"
 echo "Or:"
-echo "python3 -m http.server"
+echo "python3 -m http.server 8001"
 echo "Then open in browser:"
-echo "http://0.0.0.0:8001/build_js/task/habitat_web_app/bindings.html?defaultPhysConfig=default.physics_config.json&task=52&episodeId=0&dataset=objectnav"
+echo "http://0.0.0.0:8001/bindings.html?defaultPhysConfig=default.physics_config.json&scene=sT4fr6TAbpF.glb&episodeId=0&dataset=pick_and_place&enablePhysics=true"
+echo "To enable physics"
+echo "http://0.0.0.0:8001/bindings.html?defaultPhysConfig=default.physics_config.json&scene=sT4fr6TAbpF.glb&episodeId=0&dataset=pick_and_place&enablePhysics=true"
 
 
 # Sync the latest WebGL build to PsiTurk app

@@ -5,12 +5,7 @@
 /* global FS, Module */
 
 import WebDemo from "./modules/web_demo";
-import {
-  defaultScene,
-  dataHome,
-  sceneHome,
-  taskFiles
-} from "./modules/defaults";
+import { defaultScene, dataHome, sceneHome } from "./modules/defaults";
 import "./bindings.css";
 import {
   checkWebAssemblySupport,
@@ -19,7 +14,8 @@ import {
   buildConfigFromURLParameters,
   loadEpisode,
   getEpisodeMeta,
-  getObjects
+  getObjects,
+  getTaskConfigPath
 } from "./modules/utils";
 
 function preload(url) {
@@ -53,8 +49,7 @@ function preloadPhysConfig(url, episodeId, objectsToLoadList = null) {
   let emObjHome = emDataHome.concat("/objects");
   FS.mkdir(emObjHome);
 
-  // TODO Need to loop through the objects directory on the server (`phys/objects/*`) and put all of the glbs onto the client
-  // TODO Fix hacky loading of selected objects for each episode
+  // Load selected objects only needed for the current episode
   for (let objectIdx in objectsToLoadList) {
     let physicsProperties = objectsToLoadList[objectIdx]["physicsProperties"];
     let physicsPropertyName = physicsProperties.split("/")[
@@ -84,29 +79,14 @@ function preloadPhysConfig(url, episodeId, objectsToLoadList = null) {
   return emDataHome.concat("/".concat(file));
 }
 
-function preloadTask(task) {
+function preloadTask(datasetPath) {
   let emDataHome = "/data";
-  // load task config
-  if (task !== undefined) {
-    let taskName = task["name"];
-    let taskConfig = task["config"];
 
-    FS.createPreloadedFile(
-      emDataHome,
-      taskName,
-      dataHome.concat(taskConfig),
-      true,
-      false
-    );
+  if (datasetPath !== undefined) {
+    let splittedPath = datasetPath.split("/");
+    let taskName = splittedPath[splittedPath.length - 1];
 
-    // load training task episode config
-    FS.createPreloadedFile(
-      emDataHome,
-      task.trainingTask.name,
-      dataHome.concat(task.trainingTask.config),
-      true,
-      false
-    );
+    FS.createPreloadedFile(emDataHome, taskName, datasetPath, true, false);
   }
 }
 
@@ -132,26 +112,18 @@ Module.preRun.push(() => {
   buildConfigFromURLParameters(config);
 
   window.config = config;
-  let taskConfig = taskFiles["tasks"][parseInt(window.config.task)];
-  window.config.taskConfig = taskConfig;
+  let sceneId = config.scene.split(".")[0];
+  let datasetPath = getTaskConfigPath(sceneId, window.config.dataset);
+  window.config.datasetPath = datasetPath;
   let episodeId = config.episodeId;
 
-  let episodeMeta = getEpisodeMeta(taskConfig["config"], episodeId);
-  let trainingEpisodeMeta = getEpisodeMeta(
-    taskConfig["trainingTask"]["config"],
-    episodeId
-  );
+  let episodeMeta = getEpisodeMeta(datasetPath, episodeId);
+  let trainingEpisodeMeta = getEpisodeMeta(datasetPath, 0);
   let objectsToLoad = getObjects(
     episodeMeta,
     trainingEpisodeMeta,
     window.config.dataset
   );
-
-  // load scene from task if valid
-  if (taskConfig !== undefined) {
-    config.scene = taskConfig["scene"];
-    window.config.scene = taskConfig["scene"];
-  }
 
   const scene = config.scene;
   Module.scene = preload(scene);
@@ -166,7 +138,7 @@ Module.preRun.push(() => {
   Module.enablePhysics = window.config.enablePhysics === "true";
   window.config.runFlythrough = window.config.runFlythrough === "true";
 
-  preloadTask(taskConfig);
+  preloadTask(datasetPath);
 
   const fileNoExtension = scene.substr(0, scene.lastIndexOf("."));
 
@@ -187,9 +159,10 @@ Module.onRuntimeInitialized = () => {
   let demo;
   demo = new WebDemo();
 
-  if (window.config.taskConfig !== undefined) {
+  if (window.config.datasetPath !== undefined) {
+    let sceneId = window.config.scene.split(".")[0];
     let episode = loadEpisode(
-      "/data/".concat(window.config.taskConfig.name),
+      "/data/".concat(sceneId + ".json"),
       window.config.episodeId,
       window.config.dataset
     );

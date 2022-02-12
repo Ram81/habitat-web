@@ -4,7 +4,7 @@
 
 /* global FS */
 
-import { infoSemanticFileName, defaultEpisode } from "./defaults";
+import { infoSemanticFileName, defaultEpisode, taskHome } from "./defaults";
 
 /**
  *
@@ -243,9 +243,12 @@ export function getHost() {
   return window.location.protocol + "//" + window.location.host;
 }
 
-export function getEpisodeMeta(scene_config, episodeId) {
+export function getEpisodeMeta(sceneConfig, episodeId) {
   // read text from URL location
-  let url = getHost() + "/data/" + scene_config;
+  // let url = getHost() + "/data/" + sceneConfig;
+  let url = getHost() + "/" + sceneConfig;
+  console.log("scene config: " + sceneConfig);
+  console.log("get meta: " + url);
   var request = new XMLHttpRequest();
   request.open("GET", url, false);
   request.send(null);
@@ -336,4 +339,17 @@ export function getObjectConfig(objectName, objectHandle) {
     physicsProperties: "test_assets/objects/" + objectHandle,
     renderMesh: "test_assets/objects/" + objectId + ".glb"
   };
+}
+
+export function getTaskConfigPath(sceneId, dataset) {
+  console.log("task home: " + taskHome);
+  if (dataset == "pick_and_place") {
+    let path = taskHome + "pick_and_place/" + sceneId + ".json";
+    return path;
+  } else if (dataset == "objectnav") {
+    let path = taskHome + "objectnav_mp3d_v6/" + sceneId + ".json";
+    return path;
+  }
+  let defaultPath = taskHome + sceneId + ".json";
+  return defaultPath;
 }

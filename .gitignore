@@ -15,3 +15,6 @@ build_js
 build_corrade-rc
 node_modules
 package-lock.json
+
+# Bundle files
+task/static/habitat-sim/
