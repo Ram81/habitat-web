@@ -6,7 +6,6 @@
 
 import {
   primitiveObjectHandles,
-  fileBasedObjects,
   largeScenes,
   defaultAgentConfig
 } from "./defaults";
@@ -29,6 +28,7 @@ class SimEnv {
    * @param {number} agentId - default agent id
    */
   constructor(config, episode = {}, agentId = 0) {
+    // Downsample textures of large scenes for fast rendering on client
     if (largeScenes.includes(config.scene_id)) {
       config.textureDownsampleFactor = 1;
     }
@@ -45,10 +45,8 @@ class SimEnv {
 
     this.setEpisode(episode);
     this.maxDistance = 2.0;
-    this.objectIndexx = 108;
     this.islandRadiusLimit = 1.8;
     this.recomputeNavMesh();
-    this.locobot_id = -1;
   }
 
   /**
@@ -316,33 +314,6 @@ class SimEnv {
       new Module.Vector3(0.1, 1.5, -1.5)
     );
     this.setTranslation(position, objectId, 0);
-    return objectId;
-  }
-
-  /**
-   * Add a random file based object to the environment.
-   * @returns {number} object ID or -1 if object was unable to be added
-   */
-  addTemplateObject() {
-    let fileBasedObjectIdx = this.objectIndexx; // getRandomInt(fileBasedObjects["objects"].length);
-    let objectLibHandle =
-      fileBasedObjects["objects"][fileBasedObjectIdx]["objectHandle"];
-    let objectId = this.addObjectByHandle(objectLibHandle);
-    let agentTransform = this.getAgentTransformation(0);
-    let position = agentTransform.transformPoint(
-      new Module.Vector3(0.1, 1.5, -1.5)
-    );
-    this.setTranslation(position, objectId, 0);
-    fileBasedObjects["objects"][fileBasedObjectIdx]["isReceptacle"] = false;
-    this.addObjectInScene(
-      objectId,
-      fileBasedObjects["objects"][fileBasedObjectIdx]
-    );
-    this.sim.addContactTestObject(
-      fileBasedObjects["objects"][fileBasedObjectIdx]["objectHandle"],
-      0
-    );
-    this.objectIndexx += 1;
     return objectId;
   }
 
@@ -983,16 +954,6 @@ class SimEnv {
       rotation: this.coeffFromQuat(agentRotation),
       sensorData: sensorData
     };
-  }
-
-  getObjectPose() {
-    let objectId = this.getObjectUnderCrosshair()["nearestObjectId"];
-    let translation = this.getTranslation(objectId, 0);
-    let rotation = this.getRotation(objectId, 0);
-    console.log(
-      "object translation: " + this.convertVector3ToVec3f(translation)
-    );
-    console.log("object rotation: " + this.coeffFromQuat(rotation));
   }
 
   convertVector3ToVec3f(position) {

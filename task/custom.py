@@ -36,10 +36,6 @@ custom_code = Blueprint('custom_code', __name__,
 
 utc=pytz.UTC
 
-#task_file = open("task_data.json", "r")
-# task_data = json.loads(task_file.read())
-
-
 def is_valid_request(request_data):
     if not "hitId" in request_data.keys() or not "workerId" in request_data.keys() or not "assignmentId" in request_data.keys():
         return False
