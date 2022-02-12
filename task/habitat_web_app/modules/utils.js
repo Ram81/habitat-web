@@ -244,11 +244,8 @@ export function getHost() {
 }
 
 export function getEpisodeMeta(sceneConfig, episodeId) {
-  // read text from URL location
-  // let url = getHost() + "/data/" + sceneConfig;
+  // read config from URL location
   let url = getHost() + "/" + sceneConfig;
-  console.log("scene config: " + sceneConfig);
-  console.log("get meta: " + url);
   var request = new XMLHttpRequest();
   request.open("GET", url, false);
   request.send(null);
@@ -342,7 +339,6 @@ export function getObjectConfig(objectName, objectHandle) {
 }
 
 export function getTaskConfigPath(sceneId, dataset) {
-  console.log("task home: " + taskHome);
   if (dataset == "pick_and_place") {
     let path = taskHome + "pick_and_place/" + sceneId + ".json";
     return path;

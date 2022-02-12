@@ -61,16 +61,15 @@ set(
   bundle_files
   bindings.html
   bindings.css
-  webpack.config.js
   index.js
-  modules/object_sensor.js
-  modules/objectnav_task.js
-  modules/simenv_embind.js
-  modules/web_demo.js
   modules/defaults.js
+  modules/objectnav_task.js
   modules/object_maps.js
+  modules/simenv_embind.js
   modules/task_validator.js
   modules/utils.js
+  modules/web_demo.js
+  webpack.config.js
 )
 
 add_custom_command(
