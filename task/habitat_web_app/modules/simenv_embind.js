@@ -127,12 +127,8 @@ class SimEnv {
       // add agent object for collision test
       this.sim.addContactTestObject(this.agentObjectHandle, 0);
     }
-    let episodeCopy = JSON.parse(JSON.stringify(episode));
-    if (window.config.dataset == "objectnav" && episode.is_thda != true) {
-      episodeCopy.goals = [];
-    }
     this.psiturk.handleRecordTrialData("TEST", "setEpisode", {
-      episode: episodeCopy
+      episode: episode
     });
   }
 

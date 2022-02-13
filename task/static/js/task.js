@@ -7,16 +7,11 @@
 // Initalize psiturk object
 window.psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
 
-//var mycondition = condition;  // these two variables are passed by the psiturk server process
-//var mycounterbalance = counterbalance;  // they tell you which condition you have been assigned to
-// they are not used in this code code yet but may become useful
-
 var taskTitleMap = {
   "flythrough": "Environment flythrough",
   "training": "Training task",
   "viewer": "ObjectGoal Navigation Experiment",
-  //"instructions/instruct-general.html": "Object Rearrangement Experiment",
-  "instructions/instruct-general.html": "ObjectGoal Navigation Experiment",
+  "instructions/instruct-general.html": "Object-Search Experiment",
   "instructions/instruct-flythrough.html": "Environment flythrough",
   "instructions/instruct-training.html": "Training task",
   "instructions/instruct-task.html": "Final task",
@@ -239,15 +234,11 @@ var HabitatExperiment = function() {
       _self.trainingComplete = true;
       showViewer(false);
       $("#actions-nav").html(psiTurk.getPage(stepActionMap[step]))
-      // $('#actions-nav-instructions').show();
-      // $('#actions-nav-instructions').html(psiTurk.getPage(stepActionMap[step]));
       window.demo.runTrainingTask();
     } else if(step === "viewer") {
       // Initialize experiment episode
       showViewer(false);
       $("#actions-nav").html(psiTurk.getPage(stepActionMap[step]));
-      // $('#actions-nav-instructions').show();
-      // $('#actions-nav-instructions').html(psiTurk.getPage(stepActionMap[step]));
       window.demo.runInit();
     } else {
       $("#instructions").html(psiTurk.getPage(step))
@@ -478,9 +469,4 @@ window.currentView = undefined;
  ******************/
 $(window).load( function(){
    window.currentView = new HabitatExperiment(); ;
-
-    /*psiTurk.doInstructions(
-      instructionPages, // a list of pages you want to display in sequence
-      function() { window.currentView = new HabitatExperiment(); } // what you want to do when you are done with instructions
-    );*/
 });

@@ -10,9 +10,6 @@ task_scenes = [
     'zsNo4HB9uLZ.glb', 'QUCTc6BB5sX.glb', 'X7HyMhZNoso.glb', 'EU6Fwq7SyZv.glb', 'pLe4wQe7qrG.glb', 'TbHJrupSAjP.glb', '2azQ1b91cZZ.glb', 'oLBMNvg9in8.glb', 'x8F5xyUWy9e.glb', '8194nk5LbLH.glb', 'Z6MFQCViBuw.glb'
 ]
 
-# Gibson scenes
-task_scenes = ['Marstons', 'Wainscott', 'Hanson', 'Forkland', 'Shelbyville', 'Ranchester', 'Tolstoy', 'Merom', 'Coffeen', 'Onaga', 'Benevolence', 'Pomaria', 'Hiteman', 'Allensville', 'Woodbine', 'Newfields', 'Stockman', 'Mifflinburg', 'Beechwood', 'Lakeville', 'Pinesdale', 'Cosmos', 'Lindenwood', 'Klickitat', 'Leonardo']
-
 API_ENDPOINT = "https://habitatonweb.cloudcv.org:8000/api/v0/create_hits"
 
 
@@ -38,7 +35,7 @@ def create_hits(tasks=[], start_episode_index=0, end_episode_index=10, batch_siz
         start_episode_index += 1
 
     data = {
-        "authToken": "mySNBpBySb",
+        "authToken": "",
         "mode": "live",
         "numAssignments": 1,
         "numWorkers": 1,
@@ -88,29 +85,7 @@ def create_hits_from_list(tasks=[], episode_ids=[], batch_size=5):
             response = post_request(API_ENDPOINT, json.dumps(data))
             print(response)
 
-
-def create_all_hits(tasks, start_episode_index, end_episode_index, batch_size):
-    while start_episode_index < end_episode_index:
-        response = create_hits(tasks, start_episode_index, end_episode_index, batch_size)
-        print(response)
-        print("\n")
-        start_episode_index += batch_size
-
-
 if __name__ == "__main__":
-    # MP3D tasks
-    # tasks = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75]
-    # episode_ids = [i for i in range(360, 370)]
-    # create_hits_from_list(tasks, episode_ids)
-
-    # Val episodes
-    # tasks = [76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86]
-    # episode_ids = [200, 201]
-
-    # Exclude THDA eisodes
-    # [19, 21, 27, 35, 36, 39, 53, 60, 62, 64, 73, 75]
-    # tasks = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 48, 49, 51, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 65, 67, 68, 69, 70, 71, 72, 74]
-    
     # Gibson episodes
     exclude_tasks = [87, 91, 94, 111]
     tasks = [88, 89, 90, 92, 93, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110]

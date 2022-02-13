@@ -13,9 +13,5 @@ python "${prefix}/download_unapproved_hits.py" --db_path $db_path --dump_path "$
 
 zip -r ${prefix}/data/hit_data/visualisation/unapproved_hits.zip data/hit_data/visualisation/unapproved_hits
 
-python upload_hits_to_s3.py
-
-current_dt=$(date '+%Y_%m_%d')
-python upload_hits_to_s3.py --file ${prefix}/data/hit_data/visualisation/unapproved_hits.zip --s3-path data/unprocessed_hits/unapproved_hits_${current_dt}.zip
 
 rm ${prefix}/data/hit_data/visualisation/unapproved_hits/*

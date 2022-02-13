@@ -144,14 +144,7 @@ export function buildEpisodeFromJSON(
       scenePath[scenePath.length - 1] + "_" + episode.object_category;
 
     episode.scene_dataset = episodeJSON.episodes[episode_id].scene_dataset;
-    if (!Object.keys(episodeJSON.goals_by_category).includes(goal_id)) {
-      episode.is_thda = true;
-      episode.goals = episodeJSON.episodes[episode_id].goals;
-      episode.scene_state = episodeJSON.episodes[episode_id].scene_state;
-      episodeJSON.goals_by_category = null;
-    } else {
-      episode.goals = episodeJSON.goals_by_category[goal_id];
-    }
+    episode.goals = episodeJSON.goals_by_category[goal_id];
     episode.info = episodeJSON.episodes[episode_id].info;
     episode.start_room = episodeJSON.episodes[episode_id].start_room;
     episode.shortest_paths = episodeJSON.episodes[episode_id].shortest_paths;
@@ -343,7 +336,7 @@ export function getTaskConfigPath(sceneId, dataset) {
     let path = taskHome + "pick_and_place/" + sceneId + ".json";
     return path;
   } else if (dataset == "objectnav") {
-    let path = taskHome + "objectnav_mp3d_v6/" + sceneId + ".json";
+    let path = taskHome + "objectnav/" + sceneId + ".json";
     return path;
   }
   let defaultPath = taskHome + sceneId + ".json";

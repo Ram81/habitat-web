@@ -64,7 +64,6 @@ set(
   index.js
   modules/defaults.js
   modules/objectnav_task.js
-  modules/object_maps.js
   modules/simenv_embind.js
   modules/task_validator.js
   modules/utils.js

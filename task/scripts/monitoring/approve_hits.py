@@ -27,7 +27,7 @@ def post_request(url, data):
 
 def approve_hits(hit_id):
     data = {
-        "authToken": "mySNBpBySb",
+        "authToken": "",
         "mode": "live",
         "uniqueId": hit_id,
         "isApproved": True
