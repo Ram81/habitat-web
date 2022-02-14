@@ -30,11 +30,11 @@ class WebDemo {
     agentConfig = defaultAgentConfig,
     episode = defaultEpisode
   ) {
+    this.taskConfig = taskConfigs[window.config.dataset];
+
     this.config = new Module.SimulatorConfiguration();
-    this.config.allowSliding = false;
-    if (window.config.dataset != "objectnav") {
-      this.config.allowSliding = true;
-    }
+    this.config.allowSliding = this.taskConfig.allowSliding;
+
     this.config.scene_id = Module.scene;
     this.config.enablePhysics = Module.enablePhysics;
     this.config.physicsConfigFile = Module.physicsConfigFile;
@@ -98,16 +98,6 @@ class WebDemo {
           objectIconTags["receptacles"].join("\n") +
           "</ul>";
       }
-      // Render only objects for cleaning task
-      if (
-        objectIconTags["objects"].length > 0 &&
-        episode["task"]["type"] == "cleaning"
-      ) {
-        assistance.innerHTML =
-          "<div class='object-type'> Objects: </div> <ul>" +
-          objectIconTags["objects"].join("\n") +
-          "</ul>";
-      }
     }
     this.simenv.setEpisode(episode);
   }
@@ -155,25 +145,21 @@ class WebDemo {
   }
 
   updateAgentConfigWithSensors(agentConfig = defaultAgentConfig) {
-    let taskConfig = taskConfigs["rearrangement"];
-    if (window.config.dataset == "objectnav") {
-      taskConfig = taskConfigs[window.config.dataset];
-    }
     const sensorConfigs = [
       {
         uuid: "rgb",
         sensorType: Module.SensorType.COLOR,
-        position: taskConfig["sensorConfig"]["position"],
+        position: this.taskConfig["sensorConfig"]["position"],
         hfov: 79,
         resolution: [480, 640]
       }
     ];
     const actionSpace = new Module.ActionSpace();
     const moveActuationSpec = new Module.MapStringFloat();
-    moveActuationSpec.set("amount", taskConfig["actuationSpec"]["move"]);
+    moveActuationSpec.set("amount", this.taskConfig["actuationSpec"]["move"]);
     const turnActuationSpec = new Module.MapStringFloat();
-    turnActuationSpec.set("amount", taskConfig["actuationSpec"]["turn"]);
-    const actions = taskConfig["actions"];
+    turnActuationSpec.set("amount", this.taskConfig["actuationSpec"]["turn"]);
+    const actions = this.taskConfig["actions"];
     for (let action in actions) {
       action = actions[action];
       if (action.includes("move")) {

@@ -121,15 +121,18 @@ body {
   margin-bottom: -0.25rem; /* otherwise there's scrollbar w/ fullsize (why?) */
 }
 #status, #status-description {
+  position: absolute;
   text-align: center;
   width: 100%;
   z-index: 9;
 }
 #status {
+  top: 10%;
   font-size: 1.5rem;
   font-weight: 600;
 }
 #status-description {
+  top: 22.5%;
   padding-left: 2rem;
   padding-right: 2rem;
 }

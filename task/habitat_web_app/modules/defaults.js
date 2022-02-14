@@ -59,13 +59,13 @@ export const taskConfigs = {
       position: [0.0, 0.88, 0.0]
     },
     actions: ["moveForward", "turnLeft", "turnRight", "lookUp", "lookDown"],
-    sliding: false,
+    allowSliding: false,
     actuationSpec: {
       move: 0.25,
       turn: 30.0
     }
   },
-  rearrangement: {
+  pick_and_place: {
     sensorConfig: {
       position: [0, 1.5, 0]
     },
@@ -77,7 +77,7 @@ export const taskConfigs = {
       "lookDown",
       "moveBackward"
     ],
-    sliding: true,
+    allowSliding: true,
     actuationSpec: {
       move: 0.15,
       turn: 5.0
