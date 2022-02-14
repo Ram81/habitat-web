@@ -40,7 +40,7 @@
                     "hitId": getParameterByName("hitId"),
                     "assignmentId": getParameterByName("assignmentId"),
                     "workerId": getParameterByName("workerId"),
-                    "taskIds": [20, 22, 23, 24, 25],
+                    "taskIds": ["i5noydFURQK.glb", "JeFG25nYj2p.glb"],
                     "episodeIds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
                     "perEpisodeLimit": 5,
                     "mode": getParameterByName("mode"),
@@ -64,7 +64,7 @@
                         } else if (response["hit_limit_get_fail"] == true) {
                             window.location = "/limitfailure.html?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}&mode=" + mode;
                         } else {
-                            var hitUrl = "/exp?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}&mode=" + mode + "&enablePhysics=true&defaultPhysConfig=default.physics_config.json&task=" + taskId + "&episodeId=" + episodeId + "&dataset=objectnav";
+                            var hitUrl = "/exp?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}&mode=" + mode + "&enablePhysics=true&defaultPhysConfig=default.physics_config.json&scene=" + taskId + "&episodeId=" + episodeId + "&dataset=objectnav";
                             window.location = hitUrl;
                         }
                     } else {

@@ -128,8 +128,9 @@ class WebDemo {
     window.config.runFlythrough = false;
     window.config.actualTask = true;
     let episodeId = window.config.episodeId;
+    let taskPathSplitted = window.config.datasetPath.split("/");
     let episode = loadEpisode(
-      "/data/".concat(window.config.taskConfig.name),
+      "/data/".concat(taskPathSplitted[taskPathSplitted.length - 1]),
       episodeId,
       window.config.dataset
     );
@@ -142,9 +143,9 @@ class WebDemo {
     window.config.disableLogging = true;
     window.config.runFlythrough = false;
     window.config.actualTask = false;
-    let trainingEpisode = window.config.taskConfig.trainingTask.name;
+    let taskPathSplitted = window.config.datasetPath.split("/");
     let episode = loadEpisode(
-      "/data/".concat(trainingEpisode),
+      "/data/".concat(taskPathSplitted[taskPathSplitted.length - 1]),
       0,
       window.config.dataset
     );

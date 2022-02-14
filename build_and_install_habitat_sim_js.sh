@@ -6,9 +6,6 @@ cd habitat-sim/
 git submodule update --init --recursive
 cd ../
 
-# Sync latest WebGL app
-# cp -r task/habitat_web_app/* habitat-sim/src/esp/bindings_js/
-
 # Build Habitat-sim
 set -e
 

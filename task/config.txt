@@ -15,7 +15,7 @@ browser_exclude_rule = MSIE, mobile, tablet
 allow_repeats = true
 
 [Database Parameters]
-database_url = mysql://psiturk:password@127.0.0.1:3306/participants
+database_url = mysql://psiturk:password@127.0.0.1:3306/participants_dev
 table_name = turkdemo
 
 [Server Parameters]

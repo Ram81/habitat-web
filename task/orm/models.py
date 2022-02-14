@@ -25,7 +25,7 @@ class WorkerHitData(Base):
     hit_id = Column(String(128), nullable=False, index=True)
     assignment_id = Column(String(128), nullable=False)
     worker_id = Column(String(128), nullable=False)
-    task_id = Column(Integer)
+    task_id = Column(String(128))
     episode_id = Column(Integer)
     task_in_progress = Column(Boolean)
     task_start_time = Column(DateTime)
@@ -75,7 +75,7 @@ class HitEpisodeLimit(Base):
 
     uniqueid = Column(String(128), primary_key=True, index=True)
     hit_id = Column(String(128), nullable=False)
-    task_id = Column(Integer)
+    task_id = Column(String(128))
     episode_id = Column(Integer)
     num_assignments = Column(Integer)
     mode = Column(String(128))
