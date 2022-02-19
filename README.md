@@ -5,12 +5,17 @@ Code for the data collection infrastructure proposed in **[Habitat-Web: Learning
 
 Habitat-Web is a web application to collect human demonstrations for embodied tasks on Amazon Mechanical Turk using the Habitat simulator.
 
-<center><img src="https://github.com/Ram81/habitat-web/tree/master/task/static/assets/interface.gif"/></center>
+<p align="center">
+  <img src="task/static/assets/interface.gif"  height="400">
+</p>
+
 
 
 ## Architecture
 
-<center><img src="https://github.com/Ram81/habitat-web/tree/master/task/static/assets/architecture.png" width="600" height="350" /></center>
+<p align="center">
+  <img src="task/static/assets/architecture.png"  height="250">
+</p>
 
 
 ## Installation
