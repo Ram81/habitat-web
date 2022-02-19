@@ -3,8 +3,15 @@
 
 Code for the data collection infrastructure proposed in **[Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale]()[1]**
 
+Habitat-Web is a web application to collect human demonstrations for embodied tasks on Amazon Mechanical Turk using the Habitat simulator.
 
-Habitat-Web is a web-based application to collect human demonstrations for embodied tasks at scale using Habitat simulator to Amazon Mechanical Turk users.
+<center><img src="https://github.com/Ram81/habitat-web/tree/master/task/static/assets/interface.gif"/></center>
+
+
+## Architecture
+
+<center><img src="https://github.com/Ram81/habitat-web/tree/master/task/static/assets/architecture.png" width="600" height="350" /></center>
+
 
 ## Installation
 

@@ -77,7 +77,6 @@ class PickPlaceTask {
           this.handleAction(action);
         }
         let stepSize = 1.0 / this.frameRate;
-        let startTime = new Date().getTime();
         // Step world physics
         this.sim.stepWorld(stepSize);
         // Render observation
@@ -101,8 +100,7 @@ class PickPlaceTask {
           agentState: agentState,
           objectStates: objectStates,
           objectUnderCrosshair: objectUnderCrosshair,
-          objectDropPoint: objectDropPoint,
-          totalTime: new Date().getTime() - startTime
+          objectDropPoint: objectDropPoint
         });
         this.frameCounter += 1;
       }, 1000.0 / this.frameRate);
