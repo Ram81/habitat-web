@@ -3,20 +3,28 @@
 
 Code for the data collection infrastructure proposed in **[Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale]()[1]**
 
-Habitat-Web is a web application to collect human demonstrations for embodied tasks on Amazon Mechanical Turk using the Habitat simulator.
+Habitat-Web is a web application to collect human demonstrations for embodied tasks on Amazon Mechanical Turk (AMT) using the Habitat simulator.
 
 <p align="center">
   <img src="task/static/assets/interface.gif"  height="400">
+
+  <p align="center"><i>Example PickPlace task on <code> Habitat-Web</code> </i></p>
 </p>
 
 
 
-## Architecture
+## Details
+
+Habitat-Web leverages the [Habitat-Sim](https://github.com/facebookresearch/habitat-sim) and [PsiTurk](https://psiturk.org/) to collect human demonstrations by allowing user's to teleoperate virtual robots on the browser via [WebGL](https://en.wikipedia.org/wiki/WebGL). The architecture design of Habitat-Web is shown in the following figure:
 
 <p align="center">
   <img src="task/static/assets/architecture.png"  height="250">
+  <p align="center"><i>Architecture of <code>Habitat-Web</code> infrastructure</i></p>
 </p>
 
+Our Habitat-Web application is developed in Javascript, and allows us to access all Habitat-Sim C++ simulator APIs through Javascript bindings. This lets us use full set of simulation features available in Habitat. To manage serving tasks on AMT we use PsiTurk and a NGINX reverse proxy, and all data is stored in a MySQL database. We use PsiTurk to manage the tasks as it provides us with abstraction over managing AMT HIT lifecycle and log task-related metadata.
+
+Additional documentation on Habitat WebGL application is available [here](https://github.com/Ram81/habitat-web/blob/master/task/habitat_web_app/README.md).
 
 ## Installation
 
@@ -146,5 +154,18 @@ To enable faster development we support testing the standalone Habitat WebGL app
     ```bash
     python task/scripts/data/download_hit_data.py --db_path <db_name> --dump_path /path/to/dump/data/ --mode <psiturk_server_mode>
     ```
-    `--mode` - PsiTurk server mode. Refer the [documentation](https://psiturk.readthedocs.io/en/python2/command_line/mode.html)
+    `--mode` - PsiTurk server mode. Refer to the [documentation](https://psiturk.readthedocs.io/en/python2/command_line/mode.html)
 
+## Citation
+
+If you used this code, please consider citing:
+```
+@misc{ramrakhya2022,
+      title={Learning Embodied Object-Search from Human Demonstrations at Scale},
+      author={Ram Ramrakhya and Eric Undersander and Dhruv Batra and Abhishek Das},
+      year={2022},
+      eprint={},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
