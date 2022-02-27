@@ -34,6 +34,8 @@ set(
   ${MAGNUM_WINDOWLESSEMSCRIPTENAPPLICATION_JS}
   ${MAGNUM_WEBAPPLICATION_CSS}
   ${DATASETS}
+  ${TASK_CSS}/style.css
+  ${TASK_CSS}/bootstrap.min.css
 )
 
 foreach(resource ${resources})
@@ -64,6 +66,7 @@ set(
   index.js
   modules/defaults.js
   modules/objectnav_task.js
+  modules/pick_place_task.js
   modules/simenv_embind.js
   modules/task_validator.js
   modules/utils.js

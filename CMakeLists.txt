@@ -29,6 +29,7 @@ set(DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/task/data)
 set(SCENE_DATASETS ${CMAKE_CURRENT_SOURCE_DIR}/task/data/scene_datasets)
 set(TEST_ASSETS ${CMAKE_CURRENT_SOURCE_DIR}/task/data/test_assets)
 set(DATASETS ${CMAKE_CURRENT_SOURCE_DIR}/task/data)
+set(TASK_CSS ${CMAKE_CURRENT_SOURCE_DIR}/task/static/css)
 # build options
 option(BUILD_ASSIMP_SUPPORT "Whether to build assimp import library support" ON)
 option(BUILD_PYTHON_BINDINGS "Whether to build python bindings" ON)

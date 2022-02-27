@@ -11,8 +11,6 @@ Habitat-Web is a web application to collect human demonstrations for embodied ta
   <p align="center"><i>Example PickPlace task on <code> Habitat-Web</code> </i></p>
 </p>
 
-
-
 ## Details
 
 Habitat-Web leverages the [Habitat-Sim](https://github.com/facebookresearch/habitat-sim) and [PsiTurk](https://psiturk.org/) to collect human demonstrations by allowing user's to teleoperate virtual robots on the browser via [WebGL](https://en.wikipedia.org/wiki/WebGL). The architecture design of Habitat-Web is shown in the following figure:
@@ -110,7 +108,7 @@ To enable faster development we support testing the standalone Habitat WebGL app
 
     PickPlace task with physics enabled
     ```bash
-    http://0.0.0.0:8001/bindings.html?defaultPhysConfig=default.physics_config.json&scene=sT4fr6TAbpF.glb&episodeId=0&dataset=pick_and_place&enableStepPhysics=true
+    http://0.0.0.0:8001/bindings.html?defaultPhysConfig=default.physics_config.json&scene=sT4fr6TAbpF.glb&episodeId=0&dataset=pick_and_place&enablePhysics=true
     ```
 
 1. Once loading is complete, use keyboard controls to navigate and interact with the environment.
@@ -158,10 +156,10 @@ To enable faster development we support testing the standalone Habitat WebGL app
 
 ## Citation
 
-If you used this code, please consider citing:
+If you use this code in your research, please consider citing:
 ```
 @misc{ramrakhya2022,
-      title={Learning Embodied Object-Search from Human Demonstrations at Scale},
+      title={Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale},
       author={Ram Ramrakhya and Eric Undersander and Dhruv Batra and Abhishek Das},
       year={2022},
       eprint={},

@@ -13,6 +13,7 @@ body {
 #container {
   width:100%;
   position:relative;
+  top: 5%;
 }
 
 #controls {
@@ -130,6 +131,19 @@ h1 {
 #error img {
   padding-right: 10px;
   padding-top: 15px;
+}
+
+#status {
+  top: 15%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  left: 0%;
+}
+
+#status-description {
+  top: 18.5%;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 /* text assistance */

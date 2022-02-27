@@ -41,6 +41,7 @@ class WebDemo {
 
     this.simenv = new SimEnv(this.config, episode, 0);
     this.task_type = episode["task"]["type"];
+    this.setEpisode(episode);
 
     agentConfig = this.updateAgentConfigWithSensors({ ...agentConfig });
 
