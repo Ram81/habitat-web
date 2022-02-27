@@ -113,6 +113,11 @@ To enable faster development we support testing the standalone Habitat WebGL app
 
 1. Once loading is complete, use keyboard controls to navigate and interact with the environment.
 
+<p align="center">
+  <img src="task/static/assets/local_setup.gif"  height="250">
+  <p align="center"><i>Example of PickPlace task as a standalone application</i></p>
+</p>
+
 ### As a PsiTurk task
 
 1. Update the route alias in `task/nginx.conf` (lines 18, 24, and 30).
@@ -137,6 +142,12 @@ To enable faster development we support testing the standalone Habitat WebGL app
 1. Open `http://localhost:8000/` or `http://localhost:YOUR_ENDPOINT_PORT/` in your browser to access PsiTurk interface. Note that you must use `localhost` instead of `127.0.0.1` as the compiled habitat-sim application will attempt to load scene data from S3 otherwise.
 
     Experiment config can be modified by making changes to `task/config.txt`. You can find the documentation of PsiTurk configuration files [here](https://psiturk.readthedocs.io/en/python2/configuration.html).
+
+
+<p align="center">
+  <img src="task/static/assets/psiturk_demo.gif"  height="250">
+  <p align="center"><i>Example of PickPlace task as a PsiTurk experiment</i></p>
+</p>
 
 ## Data Collection and Monitoring
 
