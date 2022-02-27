@@ -90,6 +90,11 @@ We highly recommend installing a miniconda or Anaconda environment (note: python
 
 ### Habitat WebGL application, standalone (without PsiTurk)
 
+<p align="center">
+  <img src="task/static/assets/local_setup.gif"  height="350">
+  <p align="center"><i>Example of PickPlace task as a standalone application</i></p>
+</p>
+
 To enable faster development we support testing the standalone Habitat WebGL application. Follow these instructions:
 
 1. Start local HTTP server
@@ -113,12 +118,13 @@ To enable faster development we support testing the standalone Habitat WebGL app
 
 1. Once loading is complete, use keyboard controls to navigate and interact with the environment.
 
+### As a PsiTurk task
+
 <p align="center">
-  <img src="task/static/assets/local_setup.gif"  height="250">
-  <p align="center"><i>Example of PickPlace task as a standalone application</i></p>
+  <img src="task/static/assets/psiturk_demo.gif"  height="350">
+  <p align="center"><i>Example of PickPlace task as a PsiTurk experiment</i></p>
 </p>
 
-### As a PsiTurk task
 
 1. Update the route alias in `task/nginx.conf` (lines 18, 24, and 30).
 
@@ -143,11 +149,6 @@ To enable faster development we support testing the standalone Habitat WebGL app
 
     Experiment config can be modified by making changes to `task/config.txt`. You can find the documentation of PsiTurk configuration files [here](https://psiturk.readthedocs.io/en/python2/configuration.html).
 
-
-<p align="center">
-  <img src="task/static/assets/psiturk_demo.gif"  height="250">
-  <p align="center"><i>Example of PickPlace task as a PsiTurk experiment</i></p>
-</p>
 
 ## Data Collection and Monitoring
 
