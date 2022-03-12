@@ -1,7 +1,7 @@
 # Habitat-Web
 
 
-Code for the data collection infrastructure proposed in **[Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale]()[1]**
+Code for the data collection infrastructure proposed in **[Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale]()**
 
 Habitat-Web is a web application to collect human demonstrations for embodied tasks on Amazon Mechanical Turk (AMT) using the Habitat simulator.
 
@@ -170,12 +170,10 @@ To enable faster development we support testing the standalone Habitat WebGL app
 
 If you use this code in your research, please consider citing:
 ```
-@misc{ramrakhya2022,
+@inproceedings{ramrakhya2022,
       title={Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale},
       author={Ram Ramrakhya and Eric Undersander and Dhruv Batra and Abhishek Das},
       year={2022},
-      eprint={},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
 }
 ```
