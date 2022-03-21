@@ -166,7 +166,7 @@ To enable faster development we support testing the standalone Habitat WebGL app
     ```
     `--mode` - PsiTurk server mode. Refer to the [documentation](https://psiturk.readthedocs.io/en/python2/command_line/mode.html)
 
-For more detailed documentation on data collection and monitoring refer following [doc](https://github.com/Ram81/habitat-web/HIT_MONITORING.md).
+For more detailed documentation on data collection and monitoring refer following [doc](https://github.com/Ram81/habitat-web/blob/master/HIT_MONITORING.md).
 
 ## Citation
 
