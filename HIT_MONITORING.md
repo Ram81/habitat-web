@@ -25,7 +25,7 @@ python scripts/monitoring/launch_hits.py --mode <psiturk_server_mode> --auth-tok
     ```
     `--mode` - PsiTurk server mode. Refer to the [documentation](https://psiturk.readthedocs.io/en/python2/command_line/mode.html)
 
-For more detailed documentation on data collection and monitoring refer following [doc](https://github.com/Ram81/habitat-web/HIT_MONITORING.md).
+For more detailed documentation on data collection and monitoring refer following [doc](https://github.com/Ram81/habitat-web/blob/master/HIT_MONITORING.md).
 
 
 ### Convert HITs to Habitat Task Dataset
