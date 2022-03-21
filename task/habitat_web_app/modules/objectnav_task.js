@@ -60,9 +60,10 @@ class ObjectNavTask {
       console.log("enabled rendering step at 100ms interval");
       this.renderingFunction = setInterval(() => {
         let action = this.popAction();
-
-        // Step action from the queue
-        this.handleAction(action);
+        if (action != "noOp") {
+          // Step action from the queue
+          this.handleAction(action);
+        }
 
         // Render observation
         this.render();

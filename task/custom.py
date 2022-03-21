@@ -1,12 +1,13 @@
 # this file imports custom routes into the experiment server
 import datetime
-import pytz
 import numpy as np
+import pytz
+import random
 
 from json import loads
 from dateutil import parser
 
-from flask import Blueprint, render_template, request, jsonify, Response, abort, current_app
+from flask import Blueprint, request, jsonify, Response, abort, current_app
 from jinja2 import TemplateNotFound
 from sqlalchemy import and_
 
@@ -131,22 +132,35 @@ def get_completed_episodes():
         # Use in cases where num asssignments per HIT is greater than total number of episodes
         task_ids = []
         episode_ids = []
-        try:
-            hit_episode_limit = HitEpisodeLimit.query.get(hit_id)
-            task_episode_limit = hit_episode_limit.num_assignments
-            hit_task_id = hit_episode_limit.task_id
-            hit_episode_id = hit_episode_limit.episode_id
-            task_ids = [hit_task_id]
-            episode_ids = [hit_episode_id]
-            current_app.logger.error("HIT limit from db for id: {}, limit {}".format(hit_id, task_episode_limit))
-        except Exception as e:
-            current_app.logger.error("HIT limit from db get failed: {}  -- {}".format(hit_id, e))
-            if mode != "debug":
-                response = {"hit_limit_get_fail": True, "error": "Error occured when getting hit limit"}
-                return jsonify(**response)
-            # fallback to default task episode ids
-            task_ids = request_data["taskIds"]
-            episode_ids = request_data["episodeIds"]
+
+        if mode == "debug":
+            hit_episodes = HitEpisodeLimit.query.all()
+            task_id_episode_id_pair = []
+            for hit_episode in hit_episodes:
+                task_id_episode_id_pair.append({
+                    "task_id": hit_episode.task_id,
+                    "episode_id": hit_episode.episode_id,
+                })
+            random_idx = random.choice(range(0, len(task_id_episode_id_pair)))
+            task_ids = [task_id_episode_id_pair[random_idx]["task_id"]]
+            episode_ids = [task_id_episode_id_pair[random_idx]["episode_id"]]
+        else:
+            try:
+                hit_episode_limit = HitEpisodeLimit.query.get(hit_id)
+                task_episode_limit = hit_episode_limit.num_assignments
+                hit_task_id = hit_episode_limit.task_id
+                hit_episode_id = hit_episode_limit.episode_id
+                task_ids = [hit_task_id]
+                episode_ids = [hit_episode_id]
+                current_app.logger.error("HIT limit from db for id: {}, limit {}".format(hit_id, task_episode_limit))
+            except Exception as e:
+                current_app.logger.error("HIT limit from db get failed: {}  -- {}".format(hit_id, e))
+                if mode != "debug":
+                    response = {"hit_limit_get_fail": True, "error": "Error occured when getting hit limit"}
+                    return jsonify(**response)
+                # fallback to default task episode ids
+                task_ids = request_data["taskIds"]
+                episode_ids = request_data["episodeIds"]
 
         episodes = WorkerHitData.query.filter(and_(WorkerHitData.mode == mode, WorkerHitData.hit_id == hit_id))
         task_episode_id_hit_count_map = {}

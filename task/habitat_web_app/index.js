@@ -19,7 +19,8 @@ import {
 } from "./modules/utils";
 
 function preload(url) {
-  let file = url;
+  let urlSplit = url.split("/");
+  let file = urlSplit[urlSplit.length - 1];
   if (url.indexOf("http") === 0) {
     const splits = url.split("/");
     file = splits[splits.length - 1];
@@ -27,8 +28,6 @@ function preload(url) {
   if (window.config.dataset == "objectnav") {
     if (url.includes("semantic")) {
       url = url.split(".")[0].split("_")[0] + "/" + url;
-    } else {
-      url = url.split(".")[0] + "/" + url;
     }
   }
   FS.createPreloadedFile("/", file, sceneHome.concat(url), true, false);
@@ -125,7 +124,9 @@ Module.preRun.push(() => {
     window.config.dataset
   );
 
-  const scene = config.scene;
+  let sceneIdSplit = episodeMeta["scene_id"].split("/");
+  const scene = episodeMeta["scene_id"]; //config.scene;
+  window.config.scene = sceneIdSplit[sceneIdSplit.length - 1];
   Module.scene = preload(scene);
 
   const physicsConfigFile = window.config.defaultPhysConfig;
@@ -144,7 +145,7 @@ Module.preRun.push(() => {
 
   if (!window.config.recomputeNavMesh) {
     preload(fileNoExtension + ".navmesh");
-    preload(fileNoExtension + ".stage_config.json");
+    //preload(fileNoExtension + ".stage_config.json");
   }
   if (config.semantic === "mp3d") {
     preload(fileNoExtension + ".house");
@@ -152,6 +153,7 @@ Module.preRun.push(() => {
   } else if (config.semantic === "replica") {
     preload(getInfoSemanticUrl(config.scene));
   }
+  console.log("preloading done " + window.config.scene);
 });
 
 Module.onRuntimeInitialized = () => {

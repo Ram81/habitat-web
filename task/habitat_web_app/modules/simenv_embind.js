@@ -83,7 +83,6 @@ class SimEnv {
     this.initialAgentState = null;
     this.objectsInScene = [];
 
-    this.initialize_THDA_episode(episode);
     if (Object.keys(episode).length > 0) {
       this.initialAgentState = this.createAgentState(episode.startState);
       // add agent object for collision test
@@ -127,6 +126,8 @@ class SimEnv {
       // add agent object for collision test
       this.sim.addContactTestObject(this.agentObjectHandle, 0);
     }
+    let episodeCopy = this.deepCopy(episode);
+    episodeCopy.goals = [];
     this.psiturk.handleRecordTrialData("TEST", "setEpisode", {
       episode: episode
     });
@@ -1076,6 +1077,10 @@ class SimEnv {
       converted[key] = value;
     }
     return converted;
+  }
+
+  deepCopy(data) {
+    return JSON.parse(JSON.stringify(data));
   }
 }
 

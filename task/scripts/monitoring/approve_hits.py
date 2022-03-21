@@ -1,13 +1,12 @@
 import argparse
 import json
 import requests
-import sys
 import time
 
 from tqdm import tqdm
 
 
-SERVER = "https://habitatonweb.cloudcv.org:8000"
+SERVER = "http://localhost:8000"
 APPROVE_HIT_API = "/api/v0/approve_hit"
 
 
@@ -25,21 +24,22 @@ def post_request(url, data):
     return response
 
 
-def approve_hits(hit_id):
+def approve_hits(hit_id, auth_token, host):
     data = {
-        "authToken": "",
+        "authToken": auth_token,
         "mode": "live",
         "uniqueId": hit_id,
         "isApproved": True
     }
-    url = get_url(SERVER, APPROVE_HIT_API)
+    print(SERVER, host)
+    url = get_url(host, APPROVE_HIT_API)
     response = post_request(url, json.dumps(data))
     return response
 
 
-def approve_all_hits(hit_ids):
+def approve_all_hits(hit_ids, auth_token, host):
     for hit_id in tqdm(hit_ids):
-        response = approve_hits(hit_id)
+        response = approve_hits(hit_id, auth_token, host)
         time.sleep(0.5)
 
 
@@ -54,7 +54,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path", type=str, default="instructions.json"
     )
+    parser.add_argument(
+        "--auth-token", type=str, default=""
+    )
+    parser.add_argument(
+        "--host", type=str, default=SERVER
+    )
     args = parser.parse_args()
     hit_ids = read_all_hits(args.path)
     print("Total submitted HITs: {}".format(len(hit_ids)))
-    approve_all_hits(hit_ids)
+    approve_all_hits(hit_ids, args.auth_token, args.host)

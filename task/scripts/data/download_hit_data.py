@@ -7,9 +7,7 @@ import sys
 import pymysql
 
 from sqlalchemy import create_engine, MetaData, Table
-from sqlalchemy.orm import mapper, sessionmaker
-from psiturk.db import db_session, engine
-from db_scripts.models import ApprovedHits
+from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
 
 from collections import defaultdict
@@ -153,8 +151,8 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", sa
                 df.to_csv("{}/{}_{}.csv".format(dump_path, dump_prefix, i), index=False, header=False)
                 i += 1
 
-    feedback_df = pd.DataFrame(question_data)
-    feedback_df.to_csv("feedback/feedback_{}.csv".format(from_date.strftime("%Y-%m-%d")), index=False)
+    # feedback_df = pd.DataFrame(question_data)
+    #feedback_df.to_csv("feedback/feedback_{}.csv".format(from_date.strftime("%Y-%m-%d")), index=False)
 
 
 def split_hit_data_as_csv(df, dump_path, dump_prefix):
