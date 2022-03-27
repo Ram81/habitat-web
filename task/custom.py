@@ -424,3 +424,110 @@ def create_hits():
     except Exception as e:
         current_app.logger.error("Error /api/v0/approve_hit {}".format(e))
         abort(404)  # again, bad to display HTML, but...
+
+
+@custom_code.route('/api/v0/is_approved', methods=['POST'])
+def is_hit_already_approved():
+    request_data = loads(request.data)
+    if not "uniqueId" in request_data.keys():
+        raise ExperimentError('improper_inputs')
+
+    try:
+        unique_id = request_data["uniqueId"]
+        mode = request_data["mode"]
+
+        existing_hit = ApprovedHits.query.\
+            filter(and_(ApprovedHits.uniqueid == unique_id, ApprovedHits.mode == mode))
+
+        data = {
+            "question_data": "",
+            "message": ""
+        }
+        try:
+            participant_data = Participant.query.get(unique_id)
+            if participant_data is not None:
+                question_data = participant_data.get_question_data()
+                data["question_data"] = question_data.split(",")[-1]
+        except Exception as e:
+            current_app.logger.error("Error /api/v0/is_approved get participant {}".format(e))
+
+        if existing_hit.count() == 1 and existing_hit[0].is_approved == "True":
+            data["message"] = 'HIT already approved!'
+            return jsonify(**data)
+        
+        if existing_hit.count() == 1 and existing_hit[0].is_approved == "False":
+            data["message"] = 'HIT rejected!'
+            return jsonify(**data)
+        
+        if existing_hit.count() > 1:
+            data["message"] = 'Multiple HITs with same assignmentId!'
+            return jsonify(**data)
+        
+        data["message"] = "Not already approved"
+        return jsonify(**data)
+    except Exception as e:
+        current_app.logger.error("Error /api/v0/approve_hit {}".format(e))
+        abort(404)  # again, bad to display HTML, but...
+
+
+@custom_code.route('/api/v0/get_hits_assignment_submitted_count', methods=['POST'])
+def get_hits_assignment_submitted_count():
+    request_data = loads(request.data)
+    # if not "authToken" in request_data.keys():
+    #     raise ExperimentError('improper_inputs')
+
+    try:
+        mode = request_data["mode"]
+        scene_id = request_data["sceneId"]
+        if scene_id == 0:
+            scene_id += 1
+        current_app.logger.error("SceneId /api/v0/get_hits_assignment_submitted_count {} -- {}".format(scene_id, task_data["tasks"]))
+
+        is_sandbox = mode in ["debug", "sandbox"]
+
+        try:
+            hit_ids = []
+            all_hit_episode_limt = HitEpisodeLimit.query.filter(and_(HitEpisodeLimit.mode == mode, HitEpisodeLimit.task_id == scene_id))
+            current_app.logger.error("Count id  {}".format(all_hit_episode_limt.count()))
+                        
+            all_hit_meta = {
+                "submitted_assignments": 0,
+                "approved_assignments": 0,
+                "total_assignments": 0,
+            }
+            hit_ids = [hit_episode_limit.hit_id for hit_episode_limit in all_hit_episode_limt]
+            all_hit_meta["total_assignments"] = len(hit_ids)
+
+            completed_hits = WorkerHitData.query.filter(and_(WorkerHitData.mode == mode, WorkerHitData.task_id == scene_id, WorkerHitData.task_complete == True))
+            all_hit_meta["submitted_assignments"] = completed_hits.count()
+
+            # if len(hit_ids) != 0:
+            #     amt_services_wrapper = MTurkServicesWrapper(sandbox=is_sandbox)
+            #     amt_services_wrapper.set_sandbox(is_sandbox)
+
+            #     response = amt_services_wrapper.get_assignments(hit_ids=hit_ids, assignment_status="Submitted")
+            #     assignments = response.data["assignments"]
+            #     all_hit_meta["submitted_assignments"] = len(assignments)
+
+            #     del assignments
+
+            #     response = amt_services_wrapper.get_assignments(hit_ids=hit_ids, assignment_status="Approved")
+            #     assignments = response.data["assignments"]
+            #     all_hit_meta["approved_assignments"] = len(assignments)
+
+            #     del assignments
+
+            current_app.logger.error("Total HITS {}".format(len(hit_ids)))
+            response = {
+                "hit_meta": [],
+                "all_hit_meta": all_hit_meta,
+            }
+            return jsonify(**response)
+        except Exception as e:
+            current_app.logger.error("Error get amt_services_wrapper {}".format(e))
+            return jsonify(**{"error": "Error occurred when gettings assignments for HIT!"})
+
+    except Exception as e:
+        current_app.logger.error("Error /api/v0/get_hits_assignment_submitted_count {}".format(e))
+        abort(404)  # again, bad to display HTML, but...
+

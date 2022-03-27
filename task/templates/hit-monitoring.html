@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Habitat on Web</title>
+
+    <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+    <link rel="icon" href="/static/favicon.ico" />
+</head>
+<body>
+    <div class="container">
+        <div style="text-align:center;padding-bottom: 10px; padding-top: 10px;">
+            <input type="button" id="previous" onclick="previousPage()" value="previous" />
+            <input type="button" id="next" onclick="nextPage()" value="next" />
+        </div>
+        <div style="text-align:center;padding-bottom: 10px; padding-top: 10px;" id="pageNum">
+            Page: 1/1
+        </div>
+        <div style="text-align:center;padding-bottom: 10px; padding-top: 10px;">
+            <select name="scenes" id="sceneList" onChange="getHits();updateInstructionList();loadList();">
+            </select>
+            <select name="instructions" id="instructionList" onChange="loadList()">
+            </select>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6" id="hit_stats">
+                <label id="totalHits" style="font-weight: 300;"></label>
+                <br/>
+                <label id="sceneAssignments" style="font-weight: 300;"></label>
+                <br/>
+                <label id="sceneApprovedAssignments" style="font-weight: 300;"></label>
+                <br/>
+                <label id="message0" class="label-style" style="font-weight: 300;"></label>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <video width="100%" controls id="video1">
+                    <source type="video/mp4" id="videosource1">
+                    Your browser does not support HTML video.
+                </video>
+                <br/>
+                <label id="text1" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="uuid1" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="eplen1" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve1" value="next" class="btn btn-primary" onClick="approveHit(0, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" id="reject1" value="next" class="btn btn-danger" onClick="approveHit(0, false);">
+                            Reject <span class="glyphicon glyphicon-ban-circle"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+                <label id="message1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback1" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+            </div>
+            <div class="col-md-6">
+                <video width="100%" controls id="video2">
+                    <source type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+                <br/>
+                <label id="text2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="uuid2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="eplen2" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve2" value="next" class="btn btn-primary" onClick="approveHit(1, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" id="reject2" value="next" class="btn btn-danger" onClick="approveHit(1, false);">
+                            Reject <span class="glyphicon glyphicon-ban-circle"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+                <label id="message2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback2" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <video width="100%" controls id="video3">
+                    <source type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+                <br/>
+                <label id="text3"class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="uuid3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="eplen3" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve3" value="next" class="btn btn-primary" onClick="approveHit(2, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" id="reject3" value="next" class="btn btn-danger" onClick="approveHit(2, false);">
+                            Reject <span class="glyphicon glyphicon-ban-circle"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+                <label id="message3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback3" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+            </div>
+            <div class="col-md-6">
+                <video width="100%" controls id="video4">
+                    <source type="video/mp4">
+                    Your browser does not support HTML video.
+                </video>
+                <br/>
+                <label id="text4"class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="uuid4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="eplen4" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" id="approve4" value="next" class="btn btn-primary" onClick="approveHit(3, true);">
+                            Approve <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" id="reject4" value="next" class="btn btn-danger" onClick="approveHit(3, false);">
+                            Reject <span class="glyphicon glyphicon-ban-circle"></span>
+                        </button>
+                    </div>
+                </div>
+                <br/>
+                <label id="message4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+                <label id="feedback4" class="label-style" style="font-weight: 300;">Some random text</label>
+                <br/>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="static/js/monitoring.js"></script>
+</body>
+</html>

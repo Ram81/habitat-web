@@ -314,7 +314,7 @@ export function getTaskConfigPath(sceneId, dataset) {
     let path = taskHome + "pick_and_place/" + sceneId + ".json";
     return path;
   } else if (dataset == "objectnav") {
-    let path = taskHome + "objectnav/" + sceneId + ".json";
+    let path = taskHome + "objectnav_hm3d/v1/" + sceneId + ".json";
     return path;
   }
   let defaultPath = taskHome + sceneId + ".json";

@@ -79,8 +79,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # Gibson episodes
-    tasks = [i for i in range(11, 80) ]
-    episode_ids = [i for i in range(0, 1)]
+    tasks = [i for i in range(10, 80) ]
+    episode_ids = [i for i in range(60, 65)]
 
     create_hits_from_list(
         tasks, episode_ids, mode=args.mode, auth_token=args.auth_token, host=args.host
