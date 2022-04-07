@@ -48,7 +48,7 @@ def get_episode_trial_data(data):
     return data
 
 
-def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", sample=False, is_sqlite=False, to_date=None, exclude_approved=False):
+def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to_date=None, exclude_approved=False):
     db_user = os.environ.get("DB_USER", "psiturk")
     db_password = os.environ.get("DB_PASSWORD", "password")
     db_host = os.environ.get("DB_HOST", "127.0.0.1")
@@ -56,8 +56,6 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", sa
 
     db_url = "mysql://{}:{}@{}:{}/{}".format(db_user, db_password, db_host, db_port, db_path)
     
-    if is_sqlite:
-        db_url = "sqlite:///{}".format(db_path)
     table_name = "turkdemo"
     data_column_name = "datastring"
     # boilerplace sqlalchemy setup
@@ -106,53 +104,37 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", sa
     output_data = []
     question_data = []
 
-    if sample:
-        scene_ep_map = {}
-        for part in data:
-            part_json = json.loads(part)
-            scene_id, _ = get_scene(part_json['data'])
+    ep_hit_map = {}
+    scene_ep_map = defaultdict(int)
+    i = 0
+    for part in data:
+        part_json = json.loads(part)
+        if len(part_json.keys()) <= 0:
+            continue
+        unique_id = "{}:{}".format(part_json["workerId"], part_json["assignmentId"])
+        scene_id, episode_id = get_scene(part_json['data'])
 
-            if scene_id not in scene_ep_map.keys():
-                scene_ep_map[scene_id] = []
- 
-            if len(part_json['data']) > 0 and len(scene_ep_map[scene_id]) <= 10:
-                scene_ep_map[scene_id].append(part)
-            
-            if len(scene_ep_map[scene_id]) <= 10:
-                output_data.extend(part_json['data'])
-        print("\nTotal scenes: {}, Sample episode count: {}".format(len(scene_ep_map.keys()), 10))
-    else:
-        ep_hit_map = {}
-        scene_ep_map = defaultdict(int)
-        i = 0
-        for part in data:
-            part_json = json.loads(part)
-            if len(part_json.keys()) <= 0:
-                continue
-            unique_id = "{}:{}".format(part_json["workerId"], part_json["assignmentId"])
-            scene_id, episode_id = get_scene(part_json['data'])
+        if episode_id not in ep_hit_map.keys():
+            ep_hit_map[episode_id] = 0
+        ep_hit_map[episode_id] += 1
+        scene_ep_map[scene_id] +=1
 
-            if episode_id not in ep_hit_map.keys():
-                ep_hit_map[episode_id] = 0
-            ep_hit_map[episode_id] += 1
-            scene_ep_map[scene_id] +=1
+        if len(part_json['questiondata']['feedback']) > 0:
+            question_data.append({
+                "workerId": part_json["workerId"],
+                "assignmentId": part_json["assignmentId"],
+                "feedback": part_json['questiondata']['feedback'],
+            })
 
-            if len(part_json['questiondata']['feedback']) > 0:
-                question_data.append({
-                    "workerId": part_json["workerId"],
-                    "assignmentId": part_json["assignmentId"],
-                    "feedback": part_json['questiondata']['feedback'],
-                })
+        loaded_data = part_json['data']
+        if len(loaded_data) > 0:
+            output_data = get_episode_trial_data(loaded_data)
+            df = pd.DataFrame(output_data)
+            df.to_csv("{}/{}_{}.csv".format(dump_path, dump_prefix, i), index=False, header=False)
+            i += 1
 
-            loaded_data = part_json['data']
-            if len(loaded_data) > 0:
-                output_data = get_episode_trial_data(loaded_data)
-                df = pd.DataFrame(output_data)
-                df.to_csv("{}/{}_{}.csv".format(dump_path, dump_prefix, i), index=False, header=False)
-                i += 1
-
-    # feedback_df = pd.DataFrame(question_data)
-    #feedback_df.to_csv("feedback/feedback_{}.csv".format(from_date.strftime("%Y-%m-%d")), index=False)
+    feedback_df = pd.DataFrame(question_data)
+    feedback_df.to_csv("data/feedback/feedback_{}.csv".format(from_date.strftime("%Y-%m-%d")), index=False)
 
 
 def split_hit_data_as_csv(df, dump_path, dump_prefix):
@@ -187,15 +169,6 @@ if __name__ == "__main__":
         "--from-date", type=str, default="2020-11-01 00:00"
     )
     parser.add_argument(
-        "--sample", dest='sample', action='store_true'
-    )
-    parser.add_argument(
-        "--sqlite", dest='sqlite', action='store_true'
-    )
-    parser.add_argument(
-        "--days", type=int, default=0
-    )
-    parser.add_argument(
         "--to-date", type=str, default="2020-11-01 00:00"
     )
     parser.add_argument(
@@ -204,13 +177,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     from_date = datetime.strptime(args.from_date, "%Y-%m-%d %H:%M")
-    if args.from_date == "2020-11-01 00:00":
-        from_date = datetime.now() - timedelta(days=args.days)
-        from_date = from_date.replace(hour=0, minute=0, second=0, microsecond=0)
     
     to_date = datetime.strptime(args.to_date, "%Y-%m-%d %H:%M")
     if args.to_date == "2020-11-01 00:00":
         to_date = datetime.now()
     print("Downloading data From: " + str(from_date) + ", to: " + str(to_date))
 
-    dump_hit_data(args.db_path, args.dump_path, args.prefix, from_date, args.mode, args.sample, args.sqlite, to_date, args.exclude_approved)
+    dump_hit_data(args.db_path, args.dump_path, args.prefix, from_date, args.mode, to_date, args.exclude_approved)

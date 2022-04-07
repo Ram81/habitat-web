@@ -5,6 +5,8 @@
 /**
  * TaskValidator class
  */
+import PsiturkEventLogger from "./event_logger";
+
 class TaskValidator {
   // PUBLIC methods.
 
@@ -16,12 +18,16 @@ class TaskValidator {
     this.episode = episode;
     this.sim = sim;
     this.task = this.episode.task;
+    this.psiturk = new PsiturkEventLogger(window.psiTurk);
   }
 
   validate() {
     if (this.task === undefined) {
       return true;
     }
+    this.psiturk.handleRecordTrialData("TEST", "handleValidation", {
+      action: "STOP"
+    });
     if (this.task.type === "arrangement") {
       return this.validateArrangementTask();
     } else if (this.task.type === "cleaning") {
