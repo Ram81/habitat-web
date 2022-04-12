@@ -21,9 +21,13 @@ class ObjectNavTask {
     this.components = components;
     this.keyBindListener = null;
     this.taskValidator = null;
+    this.taskConfig = null;
 
     if (this.components.taskValidator) {
       this.taskValidator = this.components.taskValidator;
+    }
+    if (this.components.taskConfig) {
+      this.taskConfig = this.components.taskConfig;
     }
 
     this.psiturk = new PsiturkEventLogger(window.psiTurk);
@@ -148,14 +152,15 @@ class ObjectNavTask {
   }
 
   handleAction(action) {
-    let collision = this.sim.step(action);
-    // Log action and agent state
-    let agentState = this.sim.getAgentPose();
+    this.sim.step(action);
     let logData = {
-      action: action,
-      agentState: agentState,
-      collision: collision
+      action: action
     };
+    // Log action and agent state
+    if (this.taskConfig.logState) {
+      let agentState = this.sim.getAgentPose();
+      logData["agentState"] = agentState;
+    }
     this.psiturk.handleRecordTrialData("TEST", "handleAction", logData);
   }
 

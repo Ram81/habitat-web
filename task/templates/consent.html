@@ -52,10 +52,9 @@
                         var episodeId = response["episodeId"];
 
                         var mode = getParameterByName("mode");
-
                         if (response["all_episodes_completed"] == true) {
                             window.location = "/allcomplete.html?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}&mode=" + mode;
-                        } else if (response["no_episodes_available"] == true) {
+                        } else if (response["no_episodes_available"] == true || response["max_episodes_reached"] == true) {
                             window.location = "/noepisodeavailable.html?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}&mode=" + mode;
                         } else if (response["already_complete"] == true) {
                             window.location = "/allcomplete.html?hitId={{ hitid }}&assignmentId={{ assignmentid }}&workerId={{ workerid }}&mode=" + mode;

@@ -89,7 +89,7 @@ if __name__ == "__main__":
         print("using MP3D scenes")
 
     tasks = [i for i in range(0, len(task_scenes))]
-    episode_ids = [i for i in range(25, 30)]
+    episode_ids = [i for i in range(170, 175)]
 
     create_hits_from_list(
         tasks, episode_ids, mode=args.mode, auth_token=args.auth_token, host=args.host, task_scene_ids=task_scenes

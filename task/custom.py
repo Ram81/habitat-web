@@ -34,6 +34,9 @@ custom_code = Blueprint('custom_code', __name__,
 
 
 utc=pytz.UTC
+MAX_HITS_PER_TURKER = 100
+blacklisted_workers = []
+
 
 def is_valid_request(request_data):
     if not "hitId" in request_data.keys() or not "workerId" in request_data.keys() or not "assignmentId" in request_data.keys():
@@ -179,6 +182,15 @@ def get_completed_episodes():
         worker_episodes = WorkerHitData.query.\
             filter(and_(WorkerHitData.worker_id == worker_id, WorkerHitData.mode == mode,
              WorkerHitData.task_id == task_ids[0], WorkerHitData.episode_id == episode_ids[0]))
+
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        total_worker_episodes = WorkerHitData.query.\
+            filter(and_(WorkerHitData.worker_id == worker_id, WorkerHitData.mode == mode, WorkerHitData.task_start_time > today))
+
+        if total_worker_episodes.count() > MAX_HITS_PER_TURKER or worker_id in blacklisted_workers:
+            current_app.logger.error("HIT limit reached: {}".format(worker_id))
+            response = {"max_episodes_reached": True}
+            return jsonify(**response)
 
         worker_task_episode_map = {}
         for worker_episode in worker_episodes:

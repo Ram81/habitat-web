@@ -3,12 +3,12 @@ import json
 import numpy as np
 import os
 import pandas as pd
-import sys
 import pymysql
+import random
 
 from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from collections import defaultdict
 
@@ -104,21 +104,23 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to
     output_data = []
     question_data = []
 
-    ep_hit_map = {}
-    scene_ep_map = defaultdict(int)
+    ep_hit_map = defaultdict(int)
+    worker_hit_map = {}
     i = 0
     for part in data:
         try:
             part_json = json.loads(part)
+
             if len(part_json.keys()) <= 0:
                 continue
-            unique_id = "{}:{}".format(part_json["workerId"], part_json["assignmentId"])
             scene_id, episode_id = get_scene(part_json['data'])
-
-            if episode_id not in ep_hit_map.keys():
-                ep_hit_map[episode_id] = 0
             ep_hit_map[episode_id] += 1
-            scene_ep_map[scene_id] +=1
+
+            if part_json["workerId"] not in worker_hit_map.keys():
+                worker_hit_map[part_json["workerId"]] = {}
+
+            if scene_id not in worker_hit_map[part_json["workerId"]].keys():
+                worker_hit_map[part_json["workerId"]][scene_id] = []
 
             if len(part_json['questiondata']['feedback']) > 0:
                 question_data.append({
@@ -130,15 +132,19 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to
             loaded_data = part_json['data']
             if len(loaded_data) > 0:
                 output_data = get_episode_trial_data(loaded_data)
-                df = pd.DataFrame(output_data)
-                df.to_csv("{}/{}_{}.csv".format(dump_path, dump_prefix, i), index=False, header=False)
-                i += 1
+                worker_hit_map[part_json["workerId"]][scene_id].append(output_data)
         except Exception as e:
             print(e)
             continue
-
-    feedback_df = pd.DataFrame(question_data)
-    feedback_df.to_csv("data/feedback/feedback_{}.csv".format(from_date.strftime("%Y-%m-%d")), index=False)
+    
+    for worker_id, scene_map in worker_hit_map.items():
+        scenes = random.sample(list(scene_map.keys()), 1)
+        for scene in scenes:
+            hits = scene_map[scene]
+            for output_data in hits:
+                df = pd.DataFrame(output_data)
+                df.to_csv("{}/{}_{}.csv".format(dump_path, dump_prefix, i), index=False, header=False)
+                i += 1
 
 
 def split_hit_data_as_csv(df, dump_path, dump_prefix):

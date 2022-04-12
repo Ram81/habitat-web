@@ -63,7 +63,8 @@ export const taskConfigs = {
     actuationSpec: {
       move: 0.25,
       turn: 30.0
-    }
+    },
+    logState: false
   },
   pick_and_place: {
     sensorConfig: {

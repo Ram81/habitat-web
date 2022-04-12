@@ -64,7 +64,8 @@ class WebDemo {
         fps: document.getElementById("fps"),
         scope: document.getElementById("scope"),
         status: document.getElementById("status"),
-        taskValidator: this.taskValidator
+        taskValidator: this.taskValidator,
+        taskConfig: this.taskConfig
       });
     } else if (dataset == "pick_and_place") {
       task = new PickPlaceTask(this.simenv, {
