@@ -83,7 +83,9 @@ We highly recommend installing a miniconda or Anaconda environment (note: python
     ./build_and_install_habitat_sim_js.sh --bullet
     ```
 
-1. Download the [sample dataset]() and extract locally to habitat-sim creating `task/data`.
+1. Download the [sample dataset](https://habitat-on-web.s3.amazonaws.com/release/datasets/habitat-web/sample_data.zip) and extract locally to habitat-sim creating `task/data`.
+
+1. Download the MP3D dataset using the instructions here: https://github.com/facebookresearch/habitat-lab#scenes-datasets (download the full MP3D dataset for use with habitat). Move the MP3D scene dataset or create a symlink at `task/data/scene_datasets/mp3d`.
 
 
 ## Testing

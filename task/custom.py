@@ -19,8 +19,8 @@ from psiturk.user_utils import PsiTurkAuthorization
 from psiturk.amt_services_wrapper import MTurkServicesWrapper
 from psiturk.psiturk_config import PsiturkConfig
 
-from orm.models import WorkerHitData, AuthTokens, ApprovedHits, HitEpisodeLimit
-
+from orm.models import WorkerHitData, AuthTokens, ApprovedHits, HitEpisodeLimit, WorkerHitCount
+from datetime import timedelta
 
 # load the configuration options
 config = PsiturkConfig()
@@ -34,8 +34,9 @@ custom_code = Blueprint('custom_code', __name__,
 
 
 utc=pytz.UTC
-MAX_HITS_PER_TURKER = 100
-blacklisted_workers = []
+MAX_HITS_PER_TURKER = 160
+MAX_HITS_PER_DAY = 160
+blacklisted_workers = ["A2TUUIV61CR0C7", "A1P3HHEXWNLJMP", "A2Q6L9LKSNU7EB", "AONSG5WOC3OX0", "AZPZDX26SYMFY", "AXAO7UJYYEFCO", "A2MCG5W6LHSRG9", "AHIJACUG7ZL9B", "A9K0CV70JWG1W", "AXAO7UJYYEFCO", "A2CWA5VQZ6IWMQ", "A2L26DMSVUEDP6", "A3RYI5HXC2MJLN", "A26LOVXF4QZZCO", "A33VGSEJ44ORMF", "A3RR85PK3AV9TU", "A16K7X677N4WN6", "A302KOFOYLD89A", "A21ZK49H9LSSRY", "A2Q6L9LKSNU7EB", "AD1ILDUXZHASF", "AONSG5WOC3OX0", "AKYXQY5IP7S0Z", "AZPZDX26SYMFY", "A3FSDH6HUZPNQ8", "A28AXX4NCWPH1F"]
 
 
 def is_valid_request(request_data):
@@ -71,6 +72,13 @@ def is_incomplete_hit_data(worker_hit_data, assignment_id=""):
 def get_worker_hit_data(unique_id):
     try:
         return WorkerHitData.query.get(unique_id)
+    except Exception:
+        return None
+
+
+def get_worker_hit_count(worker_id):
+    try:
+        return WorkerHitCount.query.get(worker_id)
     except Exception:
         return None
 
@@ -132,6 +140,19 @@ def get_completed_episodes():
         task_episode_limit = request_data["perEpisodeLimit"]
         mode = request_data["mode"]
 
+        is_invalid_worker = not (len(worker_id) >= 10 and len(worker_id) <=15 and worker_id.upper() == worker_id)
+
+        if is_invalid_worker and mode != "debug":
+            current_app.logger.error("HIT spam blacklisted: {}".format(worker_id))
+            response = {"max_episodes_reached": True}
+            return jsonify(**response)
+
+        worker_hit_count = get_worker_hit_count(worker_id)
+        if (worker_hit_count is not None and worker_hit_count.hit_count > MAX_HITS_PER_TURKER) or worker_id in blacklisted_workers :
+            current_app.logger.error("HIT limit reached/blacklisted: {}".format(worker_id))
+            response = {"max_episodes_reached": True}
+            return jsonify(**response)
+
         # Use in cases where num asssignments per HIT is greater than total number of episodes
         task_ids = []
         episode_ids = []
@@ -183,12 +204,12 @@ def get_completed_episodes():
             filter(and_(WorkerHitData.worker_id == worker_id, WorkerHitData.mode == mode,
              WorkerHitData.task_id == task_ids[0], WorkerHitData.episode_id == episode_ids[0]))
 
-        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        today = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
         total_worker_episodes = WorkerHitData.query.\
             filter(and_(WorkerHitData.worker_id == worker_id, WorkerHitData.mode == mode, WorkerHitData.task_start_time > today))
 
-        if total_worker_episodes.count() > MAX_HITS_PER_TURKER or worker_id in blacklisted_workers:
-            current_app.logger.error("HIT limit reached: {}".format(worker_id))
+        if total_worker_episodes.count() > MAX_HITS_PER_DAY:
+            current_app.logger.error("Daily HIT limit reached: {}".format(worker_id))
             response = {"max_episodes_reached": True}
             return jsonify(**response)
 
@@ -230,6 +251,8 @@ def get_completed_episodes():
         task_id = eligible_task_episode[idx].split(":")[0]
         episode_id = int(eligible_task_episode[idx].split(":")[1])
 
+        current_app.logger.error("Worker Id: {}, {}".format(worker_id, request_data["workerId"]))
+
         unique_id = "{}:{}".format(worker_id, assignment_id)
         worker_hit_data, result = create_worker_hit_data(
             unique_id, task_id, worker_id,
@@ -240,7 +263,7 @@ def get_completed_episodes():
         if worker_hit_data is None or result == "error":
             response = {"retry": True}
             return jsonify(**response)
-        
+
         if result == "already_complete":
             response = {"already_complete": True}
             return jsonify(**response)
@@ -265,6 +288,10 @@ def worker_hit_complete():
     if not is_valid_request(request_data):
         raise ExperimentError('improper_inputs')
     unique_id = "{}:{}".format(request_data["workerId"], request_data["assignmentId"])
+    worker_id = request_data["workerId"]
+    mode = request_data.get("mode")
+    if mode not in ["debug", "sandbox"]:
+        mode = "live"
     try:
         worker_hit_data = get_worker_hit_data(unique_id)
 
@@ -275,10 +302,22 @@ def worker_hit_complete():
         worker_hit_data.training_end_time = parser.parse(request_data["trainingEndTime"])
         worker_hit_data.task_end_time = datetime.datetime.now(datetime.timezone.utc)
         db_session.commit()
+        
+        worker_hit_count = get_worker_hit_count(worker_id)
+        if worker_hit_count is None:
+            worker_hit_count = WorkerHitCount(
+                worker_id=worker_id,
+                hit_count=1,
+                mode=mode
+            )
+            db_session.add(worker_hit_count)
+        else:
+            worker_hit_count.hit_count = worker_hit_count.hit_count + 1
+        db_session.commit()
         resp = {"worker_hit_data_added": "success"}
         return jsonify(**resp)
     except Exception as e:
-        current_app.logger.error("Error /api/v0/worker_hit_complete {}".format(e))
+        current_app.logger.error("Error /api/v0/worker_hit_complete: {}, {} {}".format(request_data, mode, e))
         abort(404)  # again, bad to display HTML, but...
 
 

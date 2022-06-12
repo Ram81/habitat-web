@@ -25,11 +25,11 @@ function preload(url) {
     const splits = url.split("/");
     file = splits[splits.length - 1];
   }
-  if (window.config.dataset == "objectnav") {
-    if (url.includes("semantic")) {
-      url = url.split(".")[0].split("_")[0] + "/" + url;
-    }
-  }
+  // if (window.config.dataset == "objectnav") {
+  //   if (url.includes("semantic")) {
+  //     url = url.split(".")[0].split("_")[0] + "/" + url;
+  //   }
+  // }
   FS.createPreloadedFile("/", file, sceneHome.concat(url), true, false);
   return file;
 }
@@ -145,7 +145,7 @@ Module.preRun.push(() => {
 
   if (!window.config.recomputeNavMesh) {
     preload(fileNoExtension + ".navmesh");
-    //preload(fileNoExtension + ".stage_config.json");
+    // preload(fileNoExtension + ".stage_config.json");
   }
   if (config.semantic === "mp3d") {
     preload(fileNoExtension + ".house");

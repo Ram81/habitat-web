@@ -436,7 +436,8 @@ var Questionnaire = function(flythroughComplete, trainingComplete, flythroughEnd
         "trainingTaskComplete": trainingComplete,
         "taskComplete": true,
         "trainingEndTime": trainingEndTime,
-        "flythroughEndTime": flythroughEndTime
+        "flythroughEndTime": flythroughEndTime,
+        "mode": getParameterByName("mode")
     }));
     request.onload = () => {
         if (request.status == 200) {

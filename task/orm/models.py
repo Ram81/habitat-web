@@ -40,6 +40,19 @@ class WorkerHitData(Base):
     def __repr__(self):
         return "<User(uniqueid='%s')>" % (self.uniqueid)
 
+class WorkerHitCount(Base):
+    """
+    Object representation of a task performed by a participant in the database.
+    """
+    __tablename__ = "worker_hit_count"
+
+    worker_id = Column(String(128), primary_key=True, index=True)
+    hit_count = Column(Integer)
+    mode = Column(String(128))
+
+    def __repr__(self):
+        return "<User(uniqueid='%s')>" % (self.worker_id)
+
 
 class AuthTokens(Base):
     """

@@ -48,7 +48,13 @@ def get_episode_trial_data(data):
     return data
 
 
-def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to_date=None, exclude_approved=False):
+def filter_episode(scene_id, scene_dataset):
+    if scene_dataset == "all":
+        return False
+    return not (scene_dataset in scene_id)
+
+
+def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to_date=None, exclude_approved=False, scene_dataset="all"):
     db_user = os.environ.get("DB_USER", "psiturk")
     db_password = os.environ.get("DB_PASSWORD", "password")
     db_host = os.environ.get("DB_HOST", "127.0.0.1")
@@ -105,6 +111,7 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to
     question_data = []
 
     ep_hit_map = {}
+    hit_meta = []
     scene_ep_map = defaultdict(int)
     i = 0
     for part in data:
@@ -114,6 +121,11 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to
                 continue
             unique_id = "{}:{}".format(part_json["workerId"], part_json["assignmentId"])
             scene_id, episode_id = get_scene(part_json['data'])
+            hit_meta.append({
+                "episodeId": unique_id,
+                "scene_id": scene_id,
+                "episode_id": episode_id,
+            })
 
             if episode_id not in ep_hit_map.keys():
                 ep_hit_map[episode_id] = 0
@@ -139,6 +151,9 @@ def dump_hit_data(db_path, dump_path, dump_prefix, from_date, mode="sandbox", to
 
     feedback_df = pd.DataFrame(question_data)
     feedback_df.to_csv("data/feedback/feedback_{}.csv".format(from_date.strftime("%Y-%m-%d")), index=False)
+
+    file = open("data/instructions.json", "w")
+    file.write(json.dumps(hit_meta))
 
 
 def split_hit_data_as_csv(df, dump_path, dump_prefix):
@@ -178,6 +193,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--exclude-approved", dest='exclude_approved', action='store_true'
     )
+    parser.add_argument(
+        "--scene-dataset", type=str, default="all"
+    )
     args = parser.parse_args()
 
     from_date = datetime.strptime(args.from_date, "%Y-%m-%d %H:%M")
@@ -187,4 +205,13 @@ if __name__ == "__main__":
         to_date = datetime.now()
     print("Downloading data From: " + str(from_date) + ", to: " + str(to_date))
 
-    dump_hit_data(args.db_path, args.dump_path, args.prefix, from_date, args.mode, to_date, args.exclude_approved)
+    dump_hit_data(
+        args.db_path,
+        args.dump_path,
+        args.prefix,
+        from_date,
+        args.mode,
+        to_date,
+        args.exclude_approved,
+        args.scene_dataset
+    )
